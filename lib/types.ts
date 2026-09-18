@@ -38,11 +38,15 @@ export interface MealItem {
 }
 
 export interface MealOption {
-  id: string;
+  id?: string;
   titulo: string;
+  cal?: number;
+  p?: number;
+  c?: number;
+  l?: number;
   itens: MealItem[];
   /** Ajuste manual somado ao calculado (cobre itens sem vínculo). */
-  extra: Macros;
+  extra?: Macros;
 }
 
 export interface Meal {
@@ -96,10 +100,16 @@ export interface MicrosTexto {
   vitaminas: string;
 }
 
+export interface Micronutrients {
+  lipideosStr: string;
+  mineraisStr: string;
+  vitaminasStr: string;
+}
+
 export interface PatientProfile {
-  id: string;
-  versao: number;
-  atualizadoEm: string;
+  id?: string;
+  versao?: number;
+  atualizadoEm?: string;
   paciente: string;
   data: string;
   fase: string;
@@ -113,10 +123,165 @@ export interface PatientProfile {
   gord: number;
   fibras: number;
   agua: string;
-  antropometria: Antropometria;
-  restricoes: Restrictions;
+  antropometria?: Antropometria;
+  restricoes?: Restrictions;
   suplementos: Supplement[];
   meals: Meal[];
   receita: Recipe;
-  micros: MicrosTexto;
+  micros?: MicrosTexto;
+  lipideosStr?: string;
+  mineraisStr?: string;
+  vitaminasStr?: string;
+}
+
+export type PatientStatus = "ativo" | "alerta" | "inativo";
+export type PatientGoal = "Hipertrofia" | "Emagrecimento" | "Performance" | "Saúde & Longevidade" | "Recomposição Corporal";
+
+export interface AnthropometricData {
+  peso: number; // kg
+  altura: number; // cm
+  imc: number;
+  tmb: number; // kcal
+  get: number; // kcal
+  percentualGordura: number; // %
+  massaMagraKg: number;
+  massaGordaKg: number;
+  circunferencias?: {
+    cintura?: number;
+    abdome?: number;
+    quadril?: number;
+    bracoRelaxado?: number;
+    bracoContraido?: number;
+    coxa?: number;
+  };
+  dobras?: {
+    triceps?: number;
+    subescapular?: number;
+    suprailiaca?: number;
+    abdominal?: number;
+    coxa?: number;
+    peitoral?: number;
+    axilarMedia?: number;
+  };
+}
+
+export interface ClinicalHistoryItem {
+  id: string;
+  data: string;
+  tipo: "consulta" | "anamnese" | "retorno" | "exame" | "intercorrencia";
+  titulo: string;
+  descricao: string;
+  conduta?: string;
+}
+
+export interface Patient {
+  id: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  dataNascimento: string;
+  idade: number;
+  genero: "M" | "F";
+  objetivo: PatientGoal;
+  status: PatientStatus;
+  statusMotivo?: string;
+  restricoes: string[]; // ex: "Intolerância à lactose", "Alergia a frutos do mar"
+  patologias?: string[]; // ex: "Hipertensão leve", "Gastrite"
+  medicamentos?: string[];
+  dadosAntropometricos: AnthropometricData;
+  planoAtivoId: string;
+  ultimaConsulta: string;
+  proximaConsulta?: string;
+  adesaoMedia7d: number; // 0-100%
+  streakDias: number;
+  notasClinicas: string;
+  anamnese?: {
+    sono: string;
+    aguaLitrosDia: number;
+    intestino: string;
+    atividadeFisica: string;
+    alcoolFumo: string;
+  };
+}
+
+export interface Consultation {
+  id: string;
+  pacienteId: string;
+  pacienteNome: string;
+  dataHora: string;
+  horario: string;
+  duracaoMinutos: number;
+  status: "agendada" | "em_andamento" | "realizada" | "cancelada";
+  tipo: "presencial" | "online";
+  queixaPrincipal?: string;
+  pesoAferido?: number;
+  conduta?: string;
+  notas?: string;
+}
+
+export interface FoodItemTACO {
+  id: string;
+  nome: string;
+  categoria: "Carnes & Ovos" | "Cereais & Leguminosas" | "Frutas & Sucos" | "Laticínios" | "Gorduras & Óleos" | "Verduras & Legumes" | "Suplementos";
+  porcaoPadraoGramas: number; // 100g base
+  calorias: number;
+  proteinas: number;
+  carboidratos: number;
+  gorduras: number;
+  fibras: number;
+  medidasCaseiras: {
+    descricao: string;
+    gramas: number;
+  }[];
+}
+
+export interface DiaryEntry {
+  id: string;
+  pacienteId: string;
+  data: string;
+  refeicaoId: number;
+  refeicaoNome: string;
+  status: "cumprida" | "adaptada" | "pulada";
+  opcaoEscolhida: "A" | "B";
+  aguaConsumidaMl: number;
+  fotoUrl?: string;
+  avaliacaoEstrelas: number; // 1-5
+  notas?: string;
+}
+
+export interface ExamRecord {
+  id: string;
+  pacienteId: string;
+  data: string;
+  laboratorio: string;
+  biomarcadores: {
+    nome: string;
+    valor: number | string;
+    unidade: string;
+    referencia: string;
+    status: "normal" | "alerta" | "critico";
+  }[];
+}
+
+export interface FinancialItem {
+  id: string;
+  pacienteId: string;
+  pacienteNome: string;
+  descricao: string;
+  valor: number;
+  dataVencimento: string;
+  dataPagamento?: string;
+  status: "pago" | "pendente" | "atrasado";
+  metodo: "PIX" | "Cartão de Crédito" | "Boleto";
+}
+
+export interface PractitionerProfile {
+  nome: string;
+  titulo: string;
+  crn: string;
+  telefone: string;
+  email: string;
+  clinica: string;
+  endereco: string;
+  cidade: string;
 }
