@@ -212,10 +212,12 @@ export default function PatientPortalPage() {
             </span>
           </div>
 
-          {Object.values(profile.meals).map((meal) => {
+          {profile.meals.map((meal) => {
             const isDone = completedMeals[meal.id] || false;
             const currentOptKey = selectedOptions[meal.id] || "A";
-            const currentOpt = currentOptKey === "A" ? meal.optA : meal.optB;
+            const optA = meal.opcoes[0];
+            const optB = meal.opcoes[1] || optA;
+            const currentOpt = currentOptKey === "A" ? optA : optB;
 
             return (
               <div
@@ -260,48 +262,52 @@ export default function PatientPortalPage() {
                 </div>
 
                 {/* Option A / B Switcher */}
-                <div className="flex items-center gap-1.5 my-2.5 bg-stone-100 p-0.5 rounded-lg text-[11px]">
-                  <button
-                    onClick={() => toggleOption(meal.id, "A")}
-                    className={`flex-1 py-1 rounded-md font-medium text-center transition-all cursor-pointer ${
-                      currentOptKey === "A"
-                        ? "bg-white text-stone-900 shadow-xs font-bold"
-                        : "text-stone-500 hover:text-stone-800"
-                    }`}
-                  >
-                    Opção A ({meal.optA.cal} kcal)
-                  </button>
-                  <button
-                    onClick={() => toggleOption(meal.id, "B")}
-                    className={`flex-1 py-1 rounded-md font-medium text-center transition-all cursor-pointer ${
-                      currentOptKey === "B"
-                        ? "bg-white text-stone-900 shadow-xs font-bold"
-                        : "text-stone-500 hover:text-stone-800"
-                    }`}
-                  >
-                    Opção B ({meal.optB.cal} kcal)
-                  </button>
-                </div>
+                {meal.opcoes.length > 1 && (
+                  <div className="flex items-center gap-1.5 my-2.5 bg-stone-100 p-0.5 rounded-lg text-[11px]">
+                    <button
+                      onClick={() => toggleOption(meal.id, "A")}
+                      className={`flex-1 py-1 rounded-md font-medium text-center transition-all cursor-pointer ${
+                        currentOptKey === "A"
+                          ? "bg-white text-stone-900 shadow-xs font-bold"
+                          : "text-stone-500 hover:text-stone-800"
+                      }`}
+                    >
+                      {optA?.titulo || "Opção A"}
+                    </button>
+                    <button
+                      onClick={() => toggleOption(meal.id, "B")}
+                      className={`flex-1 py-1 rounded-md font-medium text-center transition-all cursor-pointer ${
+                        currentOptKey === "B"
+                          ? "bg-white text-stone-900 shadow-xs font-bold"
+                          : "text-stone-500 hover:text-stone-800"
+                      }`}
+                    >
+                      {optB?.titulo || "Opção B"}
+                    </button>
+                  </div>
+                )}
 
                 {/* Selected Option Content */}
-                <div className="space-y-1.5 text-xs">
-                  <div className="font-semibold text-stone-800 text-[11px]">
-                    {currentOpt.titulo}
+                {currentOpt && (
+                  <div className="space-y-1.5 text-xs mt-2">
+                    <div className="font-semibold text-stone-800 text-[11px]">
+                      {currentOpt.titulo}
+                    </div>
+                    <ul className="space-y-1 text-stone-600">
+                      {currentOpt.itens.map((item, i) => (
+                        <li key={item.id || i} className="flex items-start justify-between gap-1.5 text-[11px]">
+                          <span className="flex items-center gap-1">
+                            <span className="text-stone-400">•</span>
+                            <span>{item.nome}</span>
+                          </span>
+                          <span className="font-mono text-[10px] text-stone-500 whitespace-nowrap">
+                            {item.medida || `${item.gramas}g`}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-1 text-stone-600">
-                    {currentOpt.itens.map((item, i) => (
-                      <li key={i} className="flex items-start gap-1.5 text-[11px]">
-                        <span className="text-stone-400">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="pt-2 text-[10px] text-stone-400 font-mono flex items-center justify-between">
-                    <span>
-                      Macros: P:{currentOpt.p}g · C:{currentOpt.c}g · L:{currentOpt.l}g
-                    </span>
-                  </div>
-                </div>
+                )}
               </div>
             );
           })}

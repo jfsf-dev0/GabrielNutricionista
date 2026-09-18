@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "Painel de prescrição dietética e geração de relatórios clínicos estruturados.",
 };
 
+import { FoodsProvider } from "@/components/FoodsProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +28,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.variable} ${newsreader.variable} h-full`}>
       <body className="h-full flex flex-col antialiased selection:bg-stone-200">
-        {children}
+        <FoodsProvider>
+          {children}
+        </FoodsProvider>
       </body>
     </html>
   );

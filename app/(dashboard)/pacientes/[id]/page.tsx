@@ -501,39 +501,31 @@ export default function PatientDetailPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-xs">
-                  <div className="p-3 bg-stone-50/70 rounded-lg border border-stone-200/70">
-                    <div className="flex items-center justify-between font-semibold text-stone-800 pb-1.5 border-b border-stone-200">
-                      <span>{meal.optA.titulo}</span>
-                      <span className="font-mono text-[11px] text-stone-500">
-                        {meal.optA.cal} kcal · P: {meal.optA.p}g · C: {meal.optA.c}g · L: {meal.optA.l}g
-                      </span>
+                  {meal.opcoes?.map((opt, oIdx) => (
+                    <div key={opt.id || oIdx} className="p-3 bg-stone-50/70 rounded-lg border border-stone-200/70">
+                      <div className="flex items-center justify-between font-semibold text-stone-800 pb-1.5 border-b border-stone-200">
+                        <span>{opt.titulo}</span>
+                        {opt.extra && (
+                          <span className="font-mono text-[11px] text-stone-500">
+                            {opt.extra.kcal} kcal
+                          </span>
+                        )}
+                      </div>
+                      <ul className="mt-2 space-y-1 text-stone-600">
+                        {opt.itens?.map((item, idx) => (
+                          <li key={item.id || idx} className="flex items-start justify-between gap-1.5">
+                            <span className="flex items-center gap-1">
+                              <span className="text-stone-400">•</span>
+                              <span>{item.nome}</span>
+                            </span>
+                            <span className="font-mono text-[10px] text-stone-500 whitespace-nowrap">
+                              {item.medida || `${item.gramas}g`}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <ul className="mt-2 space-y-1 text-stone-600">
-                      {meal.optA.itens.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-1.5">
-                          <span className="text-stone-400">•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="p-3 bg-stone-50/70 rounded-lg border border-stone-200/70">
-                    <div className="flex items-center justify-between font-semibold text-stone-800 pb-1.5 border-b border-stone-200">
-                      <span>{meal.optB.titulo}</span>
-                      <span className="font-mono text-[11px] text-stone-500">
-                        {meal.optB.cal} kcal · P: {meal.optB.p}g · C: {meal.optB.c}g · L: {meal.optB.l}g
-                      </span>
-                    </div>
-                    <ul className="mt-2 space-y-1 text-stone-600">
-                      {meal.optB.itens.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-1.5">
-                          <span className="text-stone-400">•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  ))}
                 </div>
               </div>
             ))}

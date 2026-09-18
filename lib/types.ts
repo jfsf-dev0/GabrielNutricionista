@@ -38,15 +38,11 @@ export interface MealItem {
 }
 
 export interface MealOption {
-  id?: string;
+  id: string;
   titulo: string;
-  cal?: number;
-  p?: number;
-  c?: number;
-  l?: number;
   itens: MealItem[];
   /** Ajuste manual somado ao calculado (cobre itens sem vínculo). */
-  extra?: Macros;
+  extra: Macros;
 }
 
 export interface Meal {
@@ -100,16 +96,10 @@ export interface MicrosTexto {
   vitaminas: string;
 }
 
-export interface Micronutrients {
-  lipideosStr: string;
-  mineraisStr: string;
-  vitaminasStr: string;
-}
-
 export interface PatientProfile {
-  id?: string;
-  versao?: number;
-  atualizadoEm?: string;
+  id: string;
+  versao: number;
+  atualizadoEm: string;
   paciente: string;
   data: string;
   fase: string;
@@ -123,15 +113,12 @@ export interface PatientProfile {
   gord: number;
   fibras: number;
   agua: string;
-  antropometria?: Antropometria;
-  restricoes?: Restrictions;
+  antropometria: Antropometria;
+  restricoes: Restrictions;
   suplementos: Supplement[];
   meals: Meal[];
   receita: Recipe;
-  micros?: MicrosTexto;
-  lipideosStr?: string;
-  mineraisStr?: string;
-  vitaminasStr?: string;
+  micros: MicrosTexto;
 }
 
 export type PatientStatus = "ativo" | "alerta" | "inativo";
