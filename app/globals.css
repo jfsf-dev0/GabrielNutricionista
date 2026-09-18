@@ -63,6 +63,23 @@
     margin: 0 !important;
   }
 
+  /*
+   * O layout do app usa h-screen / overflow-hidden / flex para as telas. Na impressão
+   * todo ancestral de uma folha A4 precisa virar bloco de altura livre, senão o
+   * navegador imprime só a primeira página (conteúdo cortado).
+   */
+  html,
+  body,
+  *:has(.a4-sheet) {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
+    transform: none !important;
+  }
+
   .a4-sheet {
     box-shadow: none !important;
     margin: 0 !important;
@@ -73,6 +90,12 @@
     break-after: page;
     font-size: 8.5pt !important;
     line-height: 11.5pt !important;
+  }
+
+  /* A última folha não força uma página em branco depois dela. */
+  .a4-sheet:last-of-type {
+    page-break-after: auto;
+    break-after: auto;
   }
 
   @page {
