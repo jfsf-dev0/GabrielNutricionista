@@ -74,14 +74,14 @@ export default function FinancialManagementPage() {
           <div className="text-2xl font-bold font-mono text-emerald-600 mt-1 tabular-nums">
             R$ {totalPago.toFixed(2)}
           </div>
-          <div className="text-[11px] text-emerald-700/80 mt-1 font-medium">
+          <div className="text-[11px] text-emerald-800 mt-1 font-medium">
             {Math.round((totalPago / (totalGeral || 1)) * 100)}% do total do mês
           </div>
         </div>
 
         <div className="bg-white border border-stone-200/80 p-4 rounded-xl shadow-xs">
           <div className="text-xs font-medium text-stone-500">A Receber / Pendente</div>
-          <div className="text-2xl font-bold font-mono text-amber-600 mt-1 tabular-nums">
+          <div className="text-2xl font-bold font-mono text-amber-700 mt-1 tabular-nums">
             R$ {totalPendente.toFixed(2)}
           </div>
           <div className="text-[11px] text-stone-400 mt-1">Vencimentos nos próximos 15 dias</div>

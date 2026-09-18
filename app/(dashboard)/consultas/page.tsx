@@ -226,10 +226,10 @@ export default function ConsultationsAgendaPage() {
 
             <form onSubmit={handleCreateConsultation} className="space-y-3 text-xs">
               <div>
-                <label className="block text-stone-600 font-medium mb-1">
+                <label htmlFor="fld-paciente" className="block text-stone-600 font-medium mb-1">
                   Paciente
                 </label>
-                <select
+                <select id="fld-paciente"
                   value={selectedPatientId}
                   onChange={(e) => setSelectedPatientId(e.target.value)}
                   className="w-full border border-stone-300 rounded-lg p-2 text-stone-900"
@@ -244,10 +244,10 @@ export default function ConsultationsAgendaPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-data" className="block text-stone-600 font-medium mb-1">
                     Data
                   </label>
-                  <input
+                  <input id="fld-data"
                     type="date"
                     value={data}
                     onChange={(e) => setData(e.target.value)}
@@ -255,10 +255,10 @@ export default function ConsultationsAgendaPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-horario" className="block text-stone-600 font-medium mb-1">
                     Horário
                   </label>
-                  <input
+                  <input id="fld-horario"
                     type="time"
                     value={horario}
                     onChange={(e) => setHorario(e.target.value)}
@@ -268,10 +268,10 @@ export default function ConsultationsAgendaPage() {
               </div>
 
               <div>
-                <label className="block text-stone-600 font-medium mb-1">
+                <label htmlFor="fld-modalidade" className="block text-stone-600 font-medium mb-1">
                   Modalidade
                 </label>
-                <select
+                <select id="fld-modalidade"
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value as "presencial" | "online")}
                   className="w-full border border-stone-300 rounded-lg p-2 text-stone-900"
@@ -282,10 +282,10 @@ export default function ConsultationsAgendaPage() {
               </div>
 
               <div>
-                <label className="block text-stone-600 font-medium mb-1">
+                <label htmlFor="fld-motivo-queixa-principal" className="block text-stone-600 font-medium mb-1">
                   Motivo / Queixa Principal
                 </label>
-                <input
+                <input id="fld-motivo-queixa-principal"
                   type="text"
                   value={queixa}
                   onChange={(e) => setQueixa(e.target.value)}

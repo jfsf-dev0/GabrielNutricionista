@@ -35,14 +35,14 @@ export default function RelatorioPacientePage() {
   if (profile === undefined) return <div className="p-8 text-xs text-stone-600">Carregando…</div>;
   if (profile === null || !totals) {
     return (
-      <div className="p-8 text-center space-y-2" role="alert">
+      <main className="p-8 text-center space-y-2" role="alert">
         <h1 className="font-serif-title text-lg text-stone-900">Link inválido ou expirado</h1>
         <p className="text-xs text-stone-600">Peça um novo link de acesso ao seu nutricionista.</p>
-      </div>
+      </main>
     );
   }
   return (
-    <>
+    <main>
       <h1 className="sr-only">Plano alimentar de {profile.paciente}</h1>
       <div className="no-print flex justify-end p-3">
         <button onClick={() => window.print()} className="px-3 py-1.5 bg-stone-900 text-white text-xs rounded flex items-center gap-1.5">
@@ -50,6 +50,6 @@ export default function RelatorioPacientePage() {
         </button>
       </div>
       <ReportPreview profile={profile} index={index} totals={totals} />
-    </>
+    </main>
   );
 }

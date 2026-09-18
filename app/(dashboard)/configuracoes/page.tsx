@@ -63,10 +63,10 @@ export default function SettingsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-nome-profissional-completo" className="block text-[11px] text-stone-600 font-medium mb-1">
                 Nome Profissional Completo *
               </label>
-              <input
+              <input id="fld-nome-profissional-completo"
                 type="text"
                 required
                 value={nome}
@@ -76,10 +76,10 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-registro-no-conselho-regional-de" className="block text-[11px] text-stone-600 font-medium mb-1">
                 Registro no Conselho Regional de Nutricionistas (CRN) *
               </label>
-              <input
+              <input id="fld-registro-no-conselho-regional-de"
                 type="text"
                 required
                 value={crn}
@@ -89,10 +89,10 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-titulo-especialidade" className="block text-[11px] text-stone-600 font-medium mb-1">
                 Título / Especialidade
               </label>
-              <input
+              <input id="fld-titulo-especialidade"
                 type="text"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
@@ -101,10 +101,10 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-e-mail-profissional" className="block text-[11px] text-stone-600 font-medium mb-1">
                 E-mail Profissional
               </label>
-              <input
+              <input id="fld-e-mail-profissional"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -125,10 +125,10 @@ export default function SettingsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-nome-da-clinica-consultoria" className="block text-[11px] text-stone-600 font-medium mb-1">
                 Nome da Clínica / Consultoria
               </label>
-              <input
+              <input id="fld-nome-da-clinica-consultoria"
                 type="text"
                 value={clinica}
                 onChange={(e) => setClinica(e.target.value)}
@@ -137,10 +137,10 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-telefone-de-contato-whatsapp" className="block text-[11px] text-stone-600 font-medium mb-1">
                 Telefone de Contato / WhatsApp
               </label>
-              <input
+              <input id="fld-telefone-de-contato-whatsapp"
                 type="text"
                 value={telefone}
                 onChange={(e) => setTelefone(e.target.value)}
@@ -149,10 +149,10 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-cidade-estado" className="block text-[11px] text-stone-600 font-medium mb-1">
                 Cidade & Estado
               </label>
-              <input
+              <input id="fld-cidade-estado"
                 type="text"
                 value={cidade}
                 onChange={(e) => setCidade(e.target.value)}
@@ -161,10 +161,10 @@ export default function SettingsPage() {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-endereco-fisico-completo" className="block text-[11px] text-stone-600 font-medium mb-1">
                 Endereço Físico Completo
               </label>
-              <input
+              <input id="fld-endereco-fisico-completo"
                 type="text"
                 value={endereco}
                 onChange={(e) => setEndereco(e.target.value)}

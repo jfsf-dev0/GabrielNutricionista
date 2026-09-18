@@ -38,5 +38,5 @@ export function NumInput({
 }
 
 export const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="text-[11px] font-bold uppercase tracking-wider text-stone-800 mb-2">{children}</h3>
+  <h2 className="text-[11px] font-bold uppercase tracking-wider text-stone-800 mb-2">{children}</h2>
 );

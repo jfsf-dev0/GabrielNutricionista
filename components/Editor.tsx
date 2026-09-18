@@ -35,8 +35,8 @@ export default function Editor(p: Props) {
   const avisos = p.issues.length - erros;
 
   return (
-    <aside className="no-print w-full md:w-[48%] lg:w-[45%] bg-white border-r border-stone-200 flex flex-col shrink-0 min-h-0">
-      <nav className="flex items-center border-b border-stone-200 px-3 text-xs font-medium text-stone-500 overflow-x-auto shrink-0 bg-stone-50/50">
+    <aside aria-label="Editor do plano" className="no-print w-full md:w-[48%] lg:w-[45%] bg-white border-r border-stone-200 flex flex-col shrink-0 min-h-0">
+      <nav aria-label="Passos do plano" className="flex items-center border-b border-stone-200 px-3 text-xs font-medium text-stone-500 overflow-x-auto shrink-0 bg-stone-50/50">
         {STEPS.map((label, i) => (
           <button
             key={label}
@@ -56,7 +56,7 @@ export default function Editor(p: Props) {
 
       <GoalPanel profile={p.profile} totals={p.totals} />
 
-      <div className="flex-1 overflow-y-auto p-5 text-xs">
+      <div className="flex-1 overflow-y-auto p-5 text-xs" tabIndex={0} role="region" aria-label={`Passo ${step + 1}: ${STEPS[step]}`}>
         {step === 0 && <StepIdentificacao profile={p.profile} onChange={p.onChange} lockName={p.lockName} />}
         {step === 1 && <StepMetas profile={p.profile} onChange={p.onChange} />}
         {step === 2 && <StepRefeicoes profile={p.profile} onChange={p.onChange} favoritos={p.favoritos} onFoodUsed={p.onFoodUsed} />}
@@ -67,11 +67,11 @@ export default function Editor(p: Props) {
       </div>
 
       <div className="shrink-0 border-t border-stone-200 px-4 py-2 flex justify-between bg-stone-50/50">
-        <button disabled={step === 0} onClick={() => setStep(step - 1)} className="text-xs text-stone-600 disabled:opacity-30 flex items-center gap-1">
-          <ChevronLeft className="w-3.5 h-3.5" /> {step > 0 ? STEPS[step - 1] : ""}
+        <button disabled={step === 0} onClick={() => setStep(step - 1)} aria-label={step > 0 ? `Voltar para ${STEPS[step - 1]}` : "Passo anterior"} className="text-xs text-stone-600 disabled:opacity-30 flex items-center gap-1">
+          <ChevronLeft className="w-3.5 h-3.5" aria-hidden="true" /> {step > 0 ? STEPS[step - 1] : ""}
         </button>
-        <button disabled={step === STEPS.length - 1} onClick={() => setStep(step + 1)} className="text-xs font-medium text-stone-900 disabled:opacity-30 flex items-center gap-1">
-          {step < STEPS.length - 1 ? STEPS[step + 1] : ""} <ChevronRight className="w-3.5 h-3.5" />
+        <button disabled={step === STEPS.length - 1} onClick={() => setStep(step + 1)} aria-label={step < STEPS.length - 1 ? `Avançar para ${STEPS[step + 1]}` : "Próximo passo"} className="text-xs font-medium text-stone-900 disabled:opacity-30 flex items-center gap-1">
+          {step < STEPS.length - 1 ? STEPS[step + 1] : ""} <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </div>
     </aside>

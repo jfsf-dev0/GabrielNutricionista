@@ -232,10 +232,10 @@ export default function ConsultationLivePage() {
             </div>
 
             <div>
-              <label className="block text-[11px] text-stone-600 font-medium mb-1">
+              <label htmlFor="fld-o-que-mudou-desde-a-ultima-consu" className="block text-[11px] text-stone-600 font-medium mb-1">
                 O que mudou desde a última consulta? (Rotina de treinos, trabalho, viagens)
               </label>
-              <textarea
+              <textarea id="fld-o-que-mudou-desde-a-ultima-consu"
                 rows={3}
                 value={queixaAtual}
                 onChange={(e) => setQueixaAtual(e.target.value)}
@@ -245,10 +245,10 @@ export default function ConsultationLivePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-[11px] text-stone-600 font-medium mb-1">
+                <label htmlFor="fld-sono-disposicao" className="block text-[11px] text-stone-600 font-medium mb-1">
                   Sono & Disposição
                 </label>
-                <input
+                <input id="fld-sono-disposicao"
                   type="text"
                   value={sonoDisposicao}
                   onChange={(e) => setSonoDisposicao(e.target.value)}
@@ -257,10 +257,10 @@ export default function ConsultationLivePage() {
               </div>
 
               <div>
-                <label className="block text-[11px] text-stone-600 font-medium mb-1">
+                <label htmlFor="fld-sintomas-gastrointestinais-intes" className="block text-[11px] text-stone-600 font-medium mb-1">
                   Sintomas Gastrointestinais & Intestino
                 </label>
-                <input
+                <input id="fld-sintomas-gastrointestinais-intes"
                   type="text"
                   value={sintomasGI}
                   onChange={(e) => setSintomasGI(e.target.value)}
@@ -282,10 +282,10 @@ export default function ConsultationLivePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200/80">
-                <label className="block text-[10px] uppercase tracking-wider text-stone-500 font-medium mb-1">
+                <label htmlFor="fld-peso-aferido-kg" className="block text-[10px] uppercase tracking-wider text-stone-500 font-medium mb-1">
                   Peso Aferido (kg)
                 </label>
-                <input
+                <input id="fld-peso-aferido-kg"
                   type="number"
                   step="0.1"
                   value={pesoHoje}
@@ -309,10 +309,10 @@ export default function ConsultationLivePage() {
               </div>
 
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200/80">
-                <label className="block text-[10px] uppercase tracking-wider text-stone-500 font-medium mb-1">
+                <label htmlFor="fld-cintura-cm" className="block text-[10px] uppercase tracking-wider text-stone-500 font-medium mb-1">
                   Cintura (cm)
                 </label>
-                <input
+                <input id="fld-cintura-cm"
                   type="number"
                   step="0.5"
                   value={cinturaHoje}
@@ -325,10 +325,10 @@ export default function ConsultationLivePage() {
               </div>
 
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200/80">
-                <label className="block text-[10px] uppercase tracking-wider text-stone-500 font-medium mb-1">
+                <label htmlFor="fld-abdomen-cm" className="block text-[10px] uppercase tracking-wider text-stone-500 font-medium mb-1">
                   Abdômen (cm)
                 </label>
-                <input
+                <input id="fld-abdomen-cm"
                   type="number"
                   step="0.5"
                   value={abdomeHoje}

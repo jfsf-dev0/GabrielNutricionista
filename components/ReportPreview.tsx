@@ -97,7 +97,7 @@ export default function ReportPreview({ profile, index, totals }: ReportPreviewP
   );
 
   return (
-    <main className="flex-1 bg-stone-200/60 overflow-y-auto p-4 md:p-8 flex flex-col items-center print-container">
+    <div role="region" aria-label="Pré-visualização do relatório A4" tabIndex={0} className="flex-1 bg-stone-200/60 overflow-y-auto p-4 md:p-8 flex flex-col items-center print-container">
       <div className="no-print w-full max-w-[210mm] mb-3 flex items-center justify-between text-xs text-stone-500">
         <span>Preview Editorial em Tempo Real (Fonte 9pt · 2 Páginas)</span>
         <span className="text-[11px] text-stone-400">Dimensão física: A4 (210 × 297 mm)</span>
@@ -284,6 +284,6 @@ export default function ReportPreview({ profile, index, totals }: ReportPreviewP
           <span>Página 2 de 2</span>
         </footer>
       </section>
-    </main>
+    </div>
   );
 }

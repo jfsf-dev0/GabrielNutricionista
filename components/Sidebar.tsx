@@ -56,7 +56,7 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
             <div className="text-xs font-semibold text-white tracking-wide uppercase">
               Gabriel Alves
             </div>
-            <div className="text-[10px] text-stone-400 font-mono">
+            <div className="text-[10px] text-ondark-muted font-mono">
               Nutrição & Performance
             </div>
           </div>
@@ -67,10 +67,10 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
       <div className="px-3 pt-3 pb-1">
         <button
           onClick={onOpenCommand}
-          className="w-full bg-stone-800/80 hover:bg-stone-800 text-stone-400 hover:text-stone-200 px-3 py-2 rounded-lg text-xs flex items-center justify-between border border-stone-700/60 transition-colors cursor-pointer"
+          className="w-full bg-stone-800/80 hover:bg-stone-800 text-ondark-muted hover:text-stone-200 px-3 py-2 rounded-lg text-xs flex items-center justify-between border border-stone-700/60 transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-2">
-            <Command className="w-3.5 h-3.5 text-stone-400" />
+            <Command className="w-3.5 h-3.5 text-ondark-muted" />
             <span>Buscar paciente ou tela...</span>
           </span>
           <kbd className="px-1.5 py-0.5 text-[10px] bg-stone-700 text-stone-300 rounded font-mono">
@@ -81,7 +81,7 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
 
       {/* Navigation Links */}
       <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
-        <div className="text-[10px] font-semibold uppercase tracking-wider text-stone-500 px-2 pb-1">
+        <div className="text-[10px] font-semibold uppercase tracking-wider text-ondark-muted px-2 pb-1">
           Menu Principal
         </div>
         {navigation.map((item) => {
@@ -94,13 +94,13 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
               className={`group flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-all ${
                 active
                   ? "bg-stone-800 text-white shadow-sm border border-stone-700/50"
-                  : "text-stone-400 hover:text-stone-100 hover:bg-stone-800/50"
+                  : "text-ondark-muted hover:text-stone-100 hover:bg-stone-800/50"
               }`}
             >
               <div className="flex items-center gap-2.5">
                 <Icon
                   className={`w-4 h-4 transition-colors ${
-                    active ? "text-stone-100" : "text-stone-500 group-hover:text-stone-300"
+                    active ? "text-stone-100" : "text-ondark-muted group-hover:text-stone-300"
                   }`}
                 />
                 <span>{item.name}</span>
@@ -110,7 +110,7 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
                   className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
                     active
                       ? "bg-stone-700 text-stone-200"
-                      : "bg-stone-800 text-stone-400 group-hover:bg-stone-700"
+                      : "bg-stone-800 text-ondark-muted group-hover:bg-stone-700"
                   }`}
                 >
                   {item.badge}
@@ -120,7 +120,7 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
           );
         })}
 
-        <div className="pt-4 text-[10px] font-semibold uppercase tracking-wider text-stone-500 px-2 pb-1">
+        <div className="pt-4 text-[10px] font-semibold uppercase tracking-wider text-ondark-muted px-2 pb-1">
           Acesso Paciente
         </div>
         <Link
@@ -152,7 +152,7 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
             <div className="text-xs font-medium text-white truncate">
               {PRACTITIONER_GABRIEL.nome}
             </div>
-            <div className="text-[10px] text-stone-400 font-mono truncate">
+            <div className="text-[10px] text-ondark-muted font-mono truncate">
               {PRACTITIONER_GABRIEL.crn}
             </div>
           </div>

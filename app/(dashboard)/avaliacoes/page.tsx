@@ -109,6 +109,7 @@ export default function AssessmentsCalculatorPage() {
         <div className="flex items-center gap-2">
           <span className="text-xs text-stone-500 font-medium">Carregar Paciente:</span>
           <select
+            aria-label="Paciente"
             value={selectedPatientId}
             onChange={(e) => handlePatientChange(e.target.value)}
             className="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-xs text-stone-800 font-medium focus:outline-hidden"
@@ -135,10 +136,10 @@ export default function AssessmentsCalculatorPage() {
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
               <div>
-                <label className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
+                <label htmlFor="fld-peso-kg" className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
                   Peso (kg)
                 </label>
-                <input
+                <input id="fld-peso-kg"
                   type="number"
                   step="0.1"
                   value={peso}
@@ -148,10 +149,10 @@ export default function AssessmentsCalculatorPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
+                <label htmlFor="fld-altura-cm" className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
                   Altura (cm)
                 </label>
-                <input
+                <input id="fld-altura-cm"
                   type="number"
                   value={altura}
                   onChange={(e) => setAltura(Number(e.target.value))}
@@ -160,10 +161,10 @@ export default function AssessmentsCalculatorPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
+                <label htmlFor="fld-idade-anos" className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
                   Idade (anos)
                 </label>
-                <input
+                <input id="fld-idade-anos"
                   type="number"
                   value={idade}
                   onChange={(e) => setIdade(Number(e.target.value))}
@@ -172,10 +173,10 @@ export default function AssessmentsCalculatorPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
+                <label htmlFor="fld-genero" className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
                   Gênero
                 </label>
-                <select
+                <select id="fld-genero"
                   value={genero}
                   onChange={(e) => setGenero(e.target.value as "M" | "F")}
                   className="w-full border border-stone-300 rounded p-1.5 text-xs text-stone-900 outline-none"
@@ -187,10 +188,10 @@ export default function AssessmentsCalculatorPage() {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
+              <label htmlFor="fld-fator-de-atividade-fisica-get" className="block text-[10px] uppercase text-stone-500 font-medium mb-1">
                 Fator de Atividade Física (GET)
               </label>
-              <select
+              <select id="fld-fator-de-atividade-fisica-get"
                 value={atividade}
                 onChange={(e) => setAtividade(e.target.value as ActivityLevel)}
                 className="w-full border border-stone-300 rounded p-2 text-xs text-stone-900 outline-none"
@@ -218,10 +219,10 @@ export default function AssessmentsCalculatorPage() {
 
             <div className="grid grid-cols-3 gap-3 text-xs">
               <div>
-                <label className="block text-[10px] font-medium text-stone-600 mb-1">
+                <label htmlFor="fld-genero-m-1-peitoral-mm-1-triceps" className="block text-[10px] font-medium text-stone-600 mb-1">
                   {genero === "M" ? "1. Peitoral (mm)" : "1. Tríceps (mm)"}
                 </label>
-                <input
+                <input id="fld-genero-m-1-peitoral-mm-1-triceps"
                   type="number"
                   step="0.5"
                   value={d1}
@@ -231,10 +232,10 @@ export default function AssessmentsCalculatorPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-medium text-stone-600 mb-1">
+                <label htmlFor="fld-genero-m-2-abdominal-mm-2-supra-" className="block text-[10px] font-medium text-stone-600 mb-1">
                   {genero === "M" ? "2. Abdominal (mm)" : "2. Supra-ilíaca (mm)"}
                 </label>
-                <input
+                <input id="fld-genero-m-2-abdominal-mm-2-supra-"
                   type="number"
                   step="0.5"
                   value={d2}
@@ -244,10 +245,10 @@ export default function AssessmentsCalculatorPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-medium text-stone-600 mb-1">
+                <label htmlFor="fld-3-coxa-anterior-mm" className="block text-[10px] font-medium text-stone-600 mb-1">
                   3. Coxa Anterior (mm)
                 </label>
-                <input
+                <input id="fld-3-coxa-anterior-mm"
                   type="number"
                   step="0.5"
                   value={d3}
@@ -318,14 +319,14 @@ export default function AssessmentsCalculatorPage() {
 
             <div className="p-3 bg-stone-900 text-white rounded-xl flex items-center justify-between font-mono">
               <div>
-                <div className="text-[10px] text-stone-400 uppercase tracking-wider font-sans">
+                <div className="text-[10px] text-ondark-muted uppercase tracking-wider font-sans">
                   Gasto Energético Total (GET)
                 </div>
                 <div className="text-2xl font-bold">
                   {getCalculated} kcal
                 </div>
               </div>
-              <div className="text-right text-[11px] text-stone-400 font-sans">
+              <div className="text-right text-[11px] text-ondark-muted font-sans">
                 Base TMB Mifflin × {ACTIVITY_FACTORS[atividade].factor}
               </div>
             </div>
@@ -344,6 +345,7 @@ export default function AssessmentsCalculatorPage() {
               <span className="text-xs text-stone-600 font-medium">Meta Calórica Alvo:</span>
               <input
                 type="number"
+                aria-label="Meta de calorias (kcal)"
                 value={caloriasAlvo}
                 onChange={(e) => setCaloriasAlvo(Number(e.target.value))}
                 className="w-28 border border-stone-300 rounded p-1 text-xs font-mono font-bold text-stone-900 outline-none"

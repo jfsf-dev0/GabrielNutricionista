@@ -362,7 +362,7 @@ export default function DashboardHomePage() {
               <Link
                 href={portalHref}
                 target="_blank"
-                className="text-[11px] text-amber-600 hover:underline flex items-center gap-0.5 font-medium"
+                className="text-[11px] text-amber-700 hover:underline flex items-center gap-0.5 font-medium"
               >
                 <span>Visão Paciente</span>
                 <ArrowUpRight className="w-3 h-3" />

@@ -104,10 +104,10 @@ export default function PatientPortalPage() {
 
   if (invalid) {
     return (
-      <div className="p-8 text-center space-y-2" role="alert">
+      <main className="p-8 text-center space-y-2" role="alert">
         <h1 className="font-serif-title text-lg text-stone-900">Link inválido ou expirado</h1>
         <p className="text-xs text-stone-600">Peça um novo link de acesso ao seu nutricionista.</p>
-      </div>
+      </main>
     );
   }
 
@@ -131,7 +131,7 @@ export default function PatientPortalPage() {
               {patient.nome.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase()}
             </div>
             <div>
-              <div className="text-[10px] uppercase font-mono tracking-wider text-stone-400">
+              <div className="text-[10px] uppercase font-mono tracking-wider text-ondark-muted">
                 Olá, {patient.nome.split(" ")[0]}
               </div>
               <h1 className="text-sm font-bold leading-none mt-0.5 text-white">
@@ -159,7 +159,7 @@ export default function PatientPortalPage() {
           <div className="text-stone-300">
             Aderência: <strong className="text-emerald-400 font-bold">{patient.adesaoMedia7d}%</strong>
           </div>
-          <div className="text-stone-400 text-[10px]">
+          <div className="text-ondark-muted text-[10px]">
             Meta: {profile.calorias} kcal
           </div>
         </div>
@@ -175,9 +175,9 @@ export default function PatientPortalPage() {
                 <Droplets className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-stone-900">
+                <h2 className="text-xs font-bold text-stone-900">
                   Ingestão de Água Diária
-                </h3>
+                </h2>
                 <div className="text-[10px] text-stone-400 font-mono">
                   Meta: {profile.agua} ({waterGoalMl} ml)
                 </div>
@@ -220,9 +220,9 @@ export default function PatientPortalPage() {
         {/* Refeições de Hoje (Checklist Interativo) */}
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 font-mono">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-stone-500 font-mono">
               Refeições de Hoje
-            </h3>
+            </h2>
             <span className="text-[11px] text-stone-400 font-mono">
               {profile.meals.filter((m) => completedMeals[m.id]).length} de {profile.meals.length} realizadas
             </span>
@@ -248,9 +248,9 @@ export default function PatientPortalPage() {
                     <span className="text-[11px] font-mono font-bold text-stone-600 bg-stone-100 px-2 py-0.5 rounded">
                       {meal.horario}
                     </span>
-                    <h4 className="text-xs font-bold text-stone-900">
+                    <h3 className="text-xs font-bold text-stone-900">
                       {meal.nome}
-                    </h4>
+                    </h3>
                   </div>
 
                   <button
@@ -323,9 +323,9 @@ export default function PatientPortalPage() {
 
         {/* Suplementos do Dia */}
         <div className="bg-white border border-stone-200/80 rounded-2xl p-4 shadow-xs space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 font-mono">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-stone-500 font-mono">
             Suplementação Prescrita
-          </h3>
+          </h2>
 
           <div className="space-y-2">
             {profile.suplementos.map((sup, idx) => {
@@ -377,7 +377,7 @@ export default function PatientPortalPage() {
               <div className="font-bold text-white text-xs">
                 {PRACTITIONER_GABRIEL.nome}
               </div>
-              <div className="text-[10px] text-stone-400 font-mono">
+              <div className="text-[10px] text-ondark-muted font-mono">
                 {PRACTITIONER_GABRIEL.crn}
               </div>
             </div>

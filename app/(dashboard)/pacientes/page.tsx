@@ -140,6 +140,7 @@ export default function PatientsListPage() {
           </span>
 
           <select
+            aria-label="Filtrar por objetivo"
             value={filterGoal}
             onChange={(e) => setFilterGoal(e.target.value)}
             className="bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1 text-stone-700 text-xs focus:outline-hidden"
@@ -152,6 +153,7 @@ export default function PatientsListPage() {
           </select>
 
           <select
+            aria-label="Filtrar por status"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             className="bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1 text-stone-700 text-xs focus:outline-hidden"
@@ -314,10 +316,10 @@ export default function PatientsListPage() {
 
             <form onSubmit={handleCreatePatient} className="space-y-3.5 text-xs">
               <div>
-                <label className="block text-stone-600 font-medium mb-1">
+                <label htmlFor="fld-nome-completo" className="block text-stone-600 font-medium mb-1">
                   Nome Completo *
                 </label>
-                <input
+                <input id="fld-nome-completo"
                   type="text"
                   required
                   value={newNome}
@@ -329,10 +331,10 @@ export default function PatientsListPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-e-mail" className="block text-stone-600 font-medium mb-1">
                     E-mail
                   </label>
-                  <input
+                  <input id="fld-e-mail"
                     type="email"
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)}
@@ -341,10 +343,10 @@ export default function PatientsListPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-telefone-whatsapp" className="block text-stone-600 font-medium mb-1">
                     Telefone / WhatsApp
                   </label>
-                  <input
+                  <input id="fld-telefone-whatsapp"
                     type="text"
                     value={newTelefone}
                     onChange={(e) => setNewTelefone(e.target.value)}
@@ -356,10 +358,10 @@ export default function PatientsListPage() {
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-idade-anos" className="block text-stone-600 font-medium mb-1">
                     Idade (anos)
                   </label>
-                  <input
+                  <input id="fld-idade-anos"
                     type="number"
                     value={newIdade}
                     onChange={(e) => setNewIdade(Number(e.target.value))}
@@ -367,10 +369,10 @@ export default function PatientsListPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-genero" className="block text-stone-600 font-medium mb-1">
                     Gênero
                   </label>
-                  <select
+                  <select id="fld-genero"
                     value={newGenero}
                     onChange={(e) => setNewGenero(e.target.value as "M" | "F")}
                     className="w-full border border-stone-300 rounded-lg px-3 py-1.5 text-stone-900 focus:outline-hidden focus:border-stone-500"
@@ -380,10 +382,10 @@ export default function PatientsListPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-objetivo" className="block text-stone-600 font-medium mb-1">
                     Objetivo
                   </label>
-                  <select
+                  <select id="fld-objetivo"
                     value={newObjetivo}
                     onChange={(e) => setNewObjetivo(e.target.value as PatientGoal)}
                     className="w-full border border-stone-300 rounded-lg px-3 py-1.5 text-stone-900 focus:outline-hidden focus:border-stone-500"
@@ -398,10 +400,10 @@ export default function PatientsListPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-peso-inicial-kg" className="block text-stone-600 font-medium mb-1">
                     Peso Inicial (kg)
                   </label>
-                  <input
+                  <input id="fld-peso-inicial-kg"
                     type="number"
                     step="0.1"
                     value={newPeso}
@@ -410,10 +412,10 @@ export default function PatientsListPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-stone-600 font-medium mb-1">
+                  <label htmlFor="fld-altura-cm" className="block text-stone-600 font-medium mb-1">
                     Altura (cm)
                   </label>
-                  <input
+                  <input id="fld-altura-cm"
                     type="number"
                     value={newAltura}
                     onChange={(e) => setNewAltura(Number(e.target.value))}
