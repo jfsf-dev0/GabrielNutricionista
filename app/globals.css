@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1c1917;
+    background-color: #f5f5f4;
+  }
+}
+
+.font-serif-title {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+.hairline-b {
+  border-bottom: 0.5px solid #e5e5e4;
+}
+
+.hairline-t {
+  border-top: 0.5px solid #e5e5e4;
+}
+
+.hairline-all {
+  border: 0.5px solid #e5e5e4;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Folha A4 para preview editorial exato em 9pt */
+.a4-sheet {
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  padding: 12mm 14mm;
+  margin: 0 auto 24px auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  font-size: 9pt;
+  line-height: 12pt;
+  color: #222222;
+  position: relative;
+}
+
+/* Regras de Impressão para 2 Páginas A4 Perfeitas */
+@media print {
+  body {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-container {
+    display: block !important;
+    width: 100% !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .a4-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 8mm 10mm !important;
+    width: 100% !important;
+    min-height: auto !important;
+    page-break-after: always;
+    break-after: page;
+    font-size: 8.5pt !important;
+    line-height: 11.5pt !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 6mm 8mm;
+  }
+}
