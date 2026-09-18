@@ -29,8 +29,10 @@ A aplicação segue a mesma arquitetura, rigor técnico e design minimalista e e
   - Gasto Energético Total (GET) por Fator de Atividade (1.2 a 1.9x).
   - Dobras Cutâneas de **Jackson & Pollock (3 e 7 dobras)** com equação de Siri para cálculo de % de Gordura Corporal, Massa Magra (kg) e Massa Gorda (kg).
   - Planejamento de Macronutrientes por g/kg e % calórica (Proteínas, Carboidratos, Lipídeos, Fibras e Hidratação).
-- **M5 — Banco de Alimentos TACO (`/alimentos`, `lib/taco.ts` e `lib/foods.ts`):**
-  - Tabela Brasileira de Composição de Alimentos (NEPA/UNICAMP com 591 alimentos indexados) com medidas caseiras pré-configuradas (colheres, fatias, escumadeiras, conchas, scoops, xícaras) e simulador interativo de porções.
+- **M5 — Banco de Alimentos (`/alimentos`, `lib/foods.ts`, `public/foods.json`):**
+  - 602 alimentos: TACO 4ª ed. (NEPA/UNICAMP, 591) + 11 produtos do cadastro interno (whey, creatina, tilápia, cottage…), com medidas caseiras (colheres, fatias, scoops…) e simulador de porções. Base gerada por `npm run build:foods` a partir de `data/taco` e `data/extra`.
+  - Busca com tolerância a erro de digitação; preparado antes de cru; alimentos que violam restrições do paciente aparecem sinalizados (alerta baseado em grupo/nome, não garantia).
+  - Nutriente ausente na tabela de origem é mostrado como “—”; no relatório, somas incompletas levam `*` e uma nota.
 - **M6 & M7 — Prescrição & Dossiê Editorial A4 (`lib/defaultProfile.ts` & `components/ReportPreview.tsx`):**
   - Layout milimetricamente calibrado em `@media print`: proporção A4 estrita (210 × 297 mm), exatamente **2 páginas** (frente e verso), tipografia de 9pt, títulos em serif (`Newsreader`) e sem sobras/cortes indesejados.
 - **M8 & M9 — Diário Alimentar, Aderência & Alertas Clínicos:**
@@ -47,8 +49,9 @@ A aplicação segue a mesma arquitetura, rigor técnico e design minimalista e e
 - **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **Tipografia:** Inter (Sans-serif técnica) & Newsreader (Serif editorial clássica)
 - **Ícones:** [Lucide React](https://lucide.dev/)
-- **Testes:** [Vitest](https://vitest.dev/) (62 testes de lógica pura e nutrição)
-- **Hospedagem & CI/CD:** [Vercel](https://vercel.com/)
+- **Testes:** [Vitest](https://vitest.dev/) (lógica pura, base real de alimentos) e [Playwright](https://playwright.dev/) + axe (E2E, acessibilidade, impressão, segurança)
+- **Qualidade:** ESLint sem avisos, `tsc`, GitHub Actions (`.github/workflows/ci.yml`)
+- **Hospedagem:** [Vercel](https://vercel.com/)
 
 ---
 
@@ -61,13 +64,30 @@ npm install
 # 2. Executar em modo desenvolvimento
 npm run dev
 
-# 3. Testes unitários de nutrição
-npm test
+# 3. Qualidade
+npm run lint         # ESLint, 0 avisos
+npm run typecheck    # tsc
+npm test             # Vitest (lógica pura e base real de alimentos)
 
-# 4. Teste de tipos e compilação de produção
-npm run typecheck
+# 4. Produção
 npm run build
+
+# 5. E2E (constrói e sobe o app; precisa de Chromium)
+npx playwright install chromium
+npm run e2e          # PW_CHROMIUM=/caminho/do/chromium para usar um navegador já instalado
+
+# 6. Regenerar a base de alimentos
+npm run build:foods
 ```
+
+---
+
+## ⚠️ Modo demonstração (limites atuais)
+
+- **Todos os dados ficam no `localStorage` do navegador**: não há backend, login nem backup. Não use dados reais de pacientes até o backend ser ativado; use “Exportar JSON” como cópia.
+- **Portal do paciente** (`/portal/{token}`): o token é secreto (128 bits) e o id do paciente não vale como link, mas como os dados só existem no navegador do profissional, o link só funciona nesse navegador. Autenticação real depende do backend.
+- O site é `noindex` e envia CSP, `X-Frame-Options`, `nosniff`, `Referrer-Policy` e `Permissions-Policy`.
+- A CSP mantém `'unsafe-inline'` em scripts (o Next injeta scripts de hidratação); remover exige nonce por requisição via middleware.
 
 ---
 
