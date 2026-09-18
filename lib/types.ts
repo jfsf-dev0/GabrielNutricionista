@@ -177,6 +177,8 @@ export interface Patient {
   medicamentos?: string[];
   dadosAntropometricos: AnthropometricData;
   planoAtivoId: string;
+  /** Token secreto do link do portal; nunca use o id do paciente como token. */
+  portalToken?: string;
   ultimaConsulta: string;
   proximaConsulta?: string;
   adesaoMedia7d: number; // 0-100%
@@ -229,7 +231,8 @@ export interface DiaryEntry {
   refeicaoId: number;
   refeicaoNome: string;
   status: "cumprida" | "adaptada" | "pulada";
-  opcaoEscolhida: "A" | "B";
+  /** Letra da opção escolhida ("A", "B", "C"…), pela posição na refeição. */
+  opcaoEscolhida: string;
   aguaConsumidaMl: number;
   fotoUrl?: string;
   avaliacaoEstrelas: number; // 1-5

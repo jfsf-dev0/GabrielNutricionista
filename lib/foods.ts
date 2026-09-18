@@ -138,6 +138,28 @@ export function violations(food: Food, r: Restrictions): string[] {
   return out;
 }
 
+const TAG_FROM_TEXT: [RestrictionKey, RegExp][] = [
+  ["vegano", /\bvegan[oa]s?\b/],
+  ["vegetariano", /\bvegetarian[oa]s?\b/],
+  ["lactose", /lactose|laticinio/],
+  ["gluten", /gluten|celiac/],
+  ["ovo", /\bovos?\b/],
+  ["amendoim", /amendoim/],
+  ["oleaginosas", /oleaginosa|castanha|\bnozes?\b/],
+  ["frutosDoMar", /frutos? do mar|marisco|camarao|crustaceo/],
+  ["soja", /\bsoja\b/],
+];
+
+/** Converte restrições em texto livre do cadastro (ex.: "Intolerância à lactose") em tags do plano. */
+export function restrictionsFromStrings(list: string[]): Restrictions {
+  const tags = new Set<RestrictionKey>();
+  for (const item of list) {
+    const n = normalize(item);
+    for (const [tag, re] of TAG_FROM_TEXT) if (re.test(n)) tags.add(tag);
+  }
+  return { tags: [...tags], termos: "" };
+}
+
 let cache: Promise<Food[]> | null = null;
 
 /** Carrega a base de alimentos (uma vez por sessão). */

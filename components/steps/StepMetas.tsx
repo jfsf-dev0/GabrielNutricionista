@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { MAX_GRAMAS_MACRO } from "@/lib/limits";
 import { calcGoals } from "@/lib/nutrition";
 import { fmt } from "@/lib/report";
 import type { Antropometria, Objetivo, Sexo } from "@/lib/types";
@@ -31,9 +32,9 @@ export default function StepMetas({ profile, onChange }: StepProps) {
       <div>
         <SectionTitle>Calculadora de metas (ponto de partida)</SectionTitle>
         <div className="grid grid-cols-3 gap-2.5">
-          <Field label="Peso (kg)"><NumInput value={a.peso ?? 0} step={0.1} onChange={(v) => setA({ peso: v || undefined })} /></Field>
-          <Field label="Altura (cm)"><NumInput value={a.altura ?? 0} onChange={(v) => setA({ altura: v || undefined })} /></Field>
-          <Field label="Idade"><NumInput value={a.idade ?? 0} onChange={(v) => setA({ idade: v || undefined })} /></Field>
+          <Field label="Peso (kg)"><NumInput value={a.peso ?? 0} step={0.1} max={500} onChange={(v) => setA({ peso: v || undefined })} /></Field>
+          <Field label="Altura (cm)"><NumInput value={a.altura ?? 0} max={260} onChange={(v) => setA({ altura: v || undefined })} /></Field>
+          <Field label="Idade"><NumInput value={a.idade ?? 0} max={120} onChange={(v) => setA({ idade: v || undefined })} /></Field>
           <Field label="Sexo">
             <select className={inputCls} value={a.sexo ?? ""} onChange={(e) => setA({ sexo: (e.target.value || undefined) as Sexo | undefined })}>
               <option value="">—</option><option value="M">Masculino</option><option value="F">Feminino</option>
@@ -74,10 +75,10 @@ export default function StepMetas({ profile, onChange }: StepProps) {
         <SectionTitle>Metas diárias</SectionTitle>
         <div className="grid grid-cols-3 gap-2.5">
           <Field label="Calorias (kcal)"><NumInput value={profile.calorias} onChange={(v) => set("calorias", v)} className="font-semibold" /></Field>
-          <Field label="Proteínas (g)"><NumInput value={profile.prot} step={0.1} onChange={(v) => set("prot", v)} className="font-semibold" /></Field>
-          <Field label="Carboidratos (g)"><NumInput value={profile.carbo} step={0.1} onChange={(v) => set("carbo", v)} className="font-semibold" /></Field>
-          <Field label="Lipídios (g)"><NumInput value={profile.gord} step={0.1} onChange={(v) => set("gord", v)} className="font-semibold" /></Field>
-          <Field label="Fibras (g)"><NumInput value={profile.fibras} step={0.1} onChange={(v) => set("fibras", v)} className="font-semibold" /></Field>
+          <Field label="Proteínas (g)"><NumInput value={profile.prot} step={0.1} max={MAX_GRAMAS_MACRO} onChange={(v) => set("prot", v)} className="font-semibold" /></Field>
+          <Field label="Carboidratos (g)"><NumInput value={profile.carbo} step={0.1} max={MAX_GRAMAS_MACRO} onChange={(v) => set("carbo", v)} className="font-semibold" /></Field>
+          <Field label="Lipídios (g)"><NumInput value={profile.gord} step={0.1} max={MAX_GRAMAS_MACRO} onChange={(v) => set("gord", v)} className="font-semibold" /></Field>
+          <Field label="Fibras (g)"><NumInput value={profile.fibras} step={0.1} max={MAX_GRAMAS_MACRO} onChange={(v) => set("fibras", v)} className="font-semibold" /></Field>
           <Field label="Meta hídrica"><TextInput value={profile.agua} onChange={(e) => set("agua", e.target.value)} /></Field>
         </div>
       </div>

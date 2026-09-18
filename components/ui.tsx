@@ -1,4 +1,5 @@
 import React from "react";
+import { clampNum, MAX_KCAL } from "@/lib/limits";
 
 export const inputCls =
   "w-full border border-stone-200 rounded p-1.5 text-xs text-stone-900 bg-white outline-none focus:border-stone-900";
@@ -17,15 +18,20 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
 }
 
 export function NumInput({
-  value, onChange, step = 1, ...rest
-}: { value: number; onChange: (v: number) => void; step?: number } & Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "step">) {
+  value, onChange, step = 1, min = 0, max = MAX_KCAL, ...rest
+}: {
+  value: number; onChange: (v: number) => void; step?: number; min?: number; max?: number;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "step" | "min" | "max">) {
   return (
     <input
       {...rest}
       type="number"
+      inputMode="decimal"
       step={step}
+      min={min}
+      max={max}
       value={Number.isFinite(value) ? value : 0}
-      onChange={(e) => onChange(Number(e.target.value) || 0)}
+      onChange={(e) => onChange(clampNum(e.target.value, min, max))}
       className={`${inputCls} ${rest.className ?? ""}`}
     />
   );

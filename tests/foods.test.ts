@@ -51,3 +51,19 @@ describe("violations", () => {
     expect(violations(arroz, r([], "kiwi"))).toEqual([]);
   });
 });
+
+import { restrictionsFromStrings } from "@/lib/foods";
+
+describe("restrictionsFromStrings", () => {
+  it("mapeia textos do cadastro para tags", () => {
+    const r = restrictionsFromStrings(["Intolerância à lactose moderada", "Alergia a frutos do mar", "Celíaca (sem glúten)", "Sem restrições severas"]);
+    expect(r.tags.sort()).toEqual(["frutosDoMar", "gluten", "lactose"]);
+  });
+  it("vegano e vegetariano são distintos", () => {
+    expect(restrictionsFromStrings(["Vegana"]).tags).toEqual(["vegano"]);
+    expect(restrictionsFromStrings(["Vegetariano"]).tags).toEqual(["vegetariano"]);
+  });
+  it("sem restrições devolve vazio", () => {
+    expect(restrictionsFromStrings(["Sem restrições alimentares", "Nenhuma"])).toEqual({ tags: [], termos: "" });
+  });
+});

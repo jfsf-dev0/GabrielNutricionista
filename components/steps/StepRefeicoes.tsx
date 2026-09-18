@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import { ArrowLeftRight, Plus, Sparkles, StickyNote, Trash2 } from "lucide-react";
 import { violations } from "@/lib/foods";
+import { MAX_GRAMAS, MAX_GRAMAS_MACRO, MAX_KCAL } from "@/lib/limits";
 import { optionTotals, scaleNutrients, toMacros } from "@/lib/nutrition";
 import { newItem, newMeal, newOption, uid } from "@/lib/profile";
 import { suggestSubstitutions, suggestToComplete } from "@/lib/recommend";
@@ -136,7 +137,7 @@ export default function StepRefeicoes({ profile, onChange, favoritos, onFoodUsed
                             {conflito.length > 0 && <span className="ml-1 text-[10px] text-red-600 font-medium">⚠ {conflito.join(", ")}</span>}
                           </span>
                           <NumInput
-                            value={it.gramas} step={5} className="!w-16 text-right" title="Gramas"
+                            value={it.gramas} step={5} max={MAX_GRAMAS} className="!w-16 text-right" title="Gramas" aria-label={`Gramas de ${it.nome}`}
                             onChange={(v) => patchItem(opt.id, it.id, { gramas: v })}
                           />
                           <span className="text-[10px] text-stone-400">g</span>
@@ -207,7 +208,7 @@ export default function StepRefeicoes({ profile, onChange, favoritos, onFoodUsed
               <div className="grid grid-cols-4 gap-2">
                 {(["kcal", "p", "c", "l"] as const).map((k) => (
                   <Field key={k} label={k === "kcal" ? "kcal" : k === "p" ? "Prot. g" : k === "c" ? "Carb. g" : "Lip. g"}>
-                    <NumInput value={opt.extra[k]} step={k === "kcal" ? 1 : 0.1} onChange={(v) => patchOption(opt.id, (o) => ({ ...o, extra: { ...o.extra, [k]: v } }))} />
+                    <NumInput value={opt.extra[k]} step={k === "kcal" ? 1 : 0.1} max={k === "kcal" ? MAX_KCAL : MAX_GRAMAS_MACRO} onChange={(v) => patchOption(opt.id, (o) => ({ ...o, extra: { ...o.extra, [k]: v } }))} />
                   </Field>
                 ))}
               </div>

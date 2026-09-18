@@ -1,5 +1,9 @@
 import { Patient, Consultation, PatientProfile, DiaryEntry, FinancialItem, PractitionerProfile } from "./types";
 import { defaultProfile } from "./defaultProfile";
+import { restrictionsFromStrings } from "./foods";
+import { migrateProfile } from "./migrate";
+import { emptyProfile } from "./profile";
+import { sanitizeConsultation, sanitizeDiaryEntry, sanitizeFinancialItem, sanitizePatient } from "./store-sanitize";
 
 export const PRACTITIONER_GABRIEL: PractitionerProfile = {
   nome: "Gabriel Alves",
@@ -337,7 +341,7 @@ export const INITIAL_FINANCIAL: FinancialItem[] = [
   },
 ];
 
-// In-Memory & LocalStorage Storage Provider
+// LocalStorage (modo demonstração: dados só neste navegador)
 const STORAGE_KEYS = {
   PATIENTS: "gabriel_nutri_patients_v1",
   CONSULTATIONS: "gabriel_nutri_consultations_v1",
@@ -346,105 +350,132 @@ const STORAGE_KEYS = {
   FINANCIAL: "gabriel_nutri_financial_v1",
 };
 
-export function getStoredPatients(): Patient[] {
-  if (typeof window === "undefined") return INITIAL_PATIENTS;
+const hasStorage = () => typeof window !== "undefined" && typeof localStorage !== "undefined";
+
+function readJson(key: string): unknown {
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.PATIENTS);
-    return raw ? JSON.parse(raw) : INITIAL_PATIENTS;
-  } catch (e) {
-    return INITIAL_PATIENTS;
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : undefined;
+  } catch {
+    return undefined;
   }
 }
 
-export function saveStoredPatients(patients: Patient[]) {
-  if (typeof window === "undefined") return;
+function writeJson(key: string, value: unknown): boolean {
   try {
-    localStorage.setItem(STORAGE_KEYS.PATIENTS, JSON.stringify(patients));
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
   } catch (e) {
-    console.error("Failed to save patients", e);
+    console.error(`Falha ao salvar ${key}`, e);
+    return false;
   }
+}
+
+/** Lê uma lista validando cada item; qualquer coisa que não seja lista volta para os dados iniciais. */
+function readList<T>(key: string, seed: T[], sanitize: (raw: unknown) => T | null): T[] {
+  if (!hasStorage()) return seed;
+  const raw = readJson(key);
+  if (!Array.isArray(raw)) return seed;
+  return raw.map(sanitize).filter((x): x is T => x !== null);
+}
+
+function newToken(): string {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+export function getStoredPatients(): Patient[] {
+  if (!hasStorage()) return INITIAL_PATIENTS;
+  const patients = readList(STORAGE_KEYS.PATIENTS, INITIAL_PATIENTS, sanitizePatient);
+  if (patients.some((p) => !p.portalToken)) {
+    const withTokens = patients.map((p) => (p.portalToken ? p : { ...p, portalToken: newToken() }));
+    writeJson(STORAGE_KEYS.PATIENTS, withTokens);
+    return withTokens;
+  }
+  return patients;
+}
+
+export function saveStoredPatients(patients: Patient[]): boolean {
+  if (!hasStorage()) return false;
+  return writeJson(STORAGE_KEYS.PATIENTS, patients);
+}
+
+/** Resolve o link do portal. Só o token exato vale: id do paciente não é aceito e não há fallback. */
+export function getPatientByPortalToken(token: string): Patient | null {
+  if (!token || token.length < 16) return null;
+  return getStoredPatients().find((p) => p.portalToken === token) ?? null;
+}
+
+/** A rota /planos/[id] aceita o id do paciente ou o id do plano ativo. */
+export function getPatientForPlanRoute(id: string): Patient | null {
+  return getStoredPatients().find((p) => p.id === id || p.planoAtivoId === id) ?? null;
 }
 
 export function getStoredConsultations(): Consultation[] {
-  if (typeof window === "undefined") return INITIAL_CONSULTATIONS;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.CONSULTATIONS);
-    return raw ? JSON.parse(raw) : INITIAL_CONSULTATIONS;
-  } catch (e) {
-    return INITIAL_CONSULTATIONS;
-  }
+  return readList(STORAGE_KEYS.CONSULTATIONS, INITIAL_CONSULTATIONS, sanitizeConsultation);
 }
 
-export function saveStoredConsultations(consultations: Consultation[]) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(STORAGE_KEYS.CONSULTATIONS, JSON.stringify(consultations));
-  } catch (e) {
-    console.error("Failed to save consultations", e);
+export function saveStoredConsultations(consultations: Consultation[]): boolean {
+  if (!hasStorage()) return false;
+  return writeJson(STORAGE_KEYS.CONSULTATIONS, consultations);
+}
+
+const goalToObjetivo = (g: Patient["objetivo"]) =>
+  g === "Emagrecimento" ? "perda" : g === "Hipertrofia" ? "ganho" : "manutencao";
+
+/** Campos do plano que vêm do cadastro do paciente (fonte única de verdade). */
+function profileFieldsFromPatient(p: Patient): Pick<PatientProfile, "paciente" | "antropometria"> & { restricoes: PatientProfile["restricoes"] } {
+  const a = p.dadosAntropometricos;
+  const antropometria: PatientProfile["antropometria"] = { objetivo: goalToObjetivo(p.objetivo), sexo: p.genero };
+  if (a.peso > 0) antropometria.peso = a.peso;
+  if (a.altura > 0) antropometria.altura = a.altura;
+  if (p.idade > 0) antropometria.idade = p.idade;
+  return { paciente: p.nome, antropometria, restricoes: restrictionsFromStrings(p.restricoes) };
+}
+
+const DEMO_IDS = new Set(INITIAL_PATIENTS.map((p) => p.id));
+
+/** Plano inicial de um paciente sem plano salvo. Pacientes de demonstração reaproveitam o plano modelo. */
+function planFromPatient(p: Patient): PatientProfile {
+  const fields = profileFieldsFromPatient(p);
+  if (p.id === "pac-joao-freire") return { ...defaultProfile, ...fields };
+  const hoje = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+  if (DEMO_IDS.has(p.id)) {
+    return { ...defaultProfile, ...fields, id: `plano-${p.id}`, data: hoje, calorias: p.dadosAntropometricos.get || p.dadosAntropometricos.tmb + 400 };
   }
+  const { nutricionista, crn, telefone, local } = defaultProfile;
+  return { ...emptyProfile({ nutricionista, crn, telefone, local }), ...fields, id: `plano-${p.id}` };
 }
 
 export function getStoredPlanProfile(patientId: string): PatientProfile {
-  if (typeof window === "undefined") return defaultProfile;
-  try {
-    const raw = localStorage.getItem(`${STORAGE_KEYS.PROFILES}_${patientId}`);
-    if (raw) return JSON.parse(raw);
-    if (patientId === "pac-joao-freire") return defaultProfile;
-    // Fallback for others: clone default with name
-    const patients = getStoredPatients();
-    const p = patients.find((x) => x.id === patientId);
-    if (p) {
-      return {
-        ...defaultProfile,
-        paciente: p.nome,
-        calorias: p.dadosAntropometricos.tmb + 400,
-        data: new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" }),
-      };
+  const patient = hasStorage() ? getStoredPatients().find((x) => x.id === patientId) : INITIAL_PATIENTS.find((x) => x.id === patientId);
+  if (hasStorage()) {
+    const raw = readJson(`${STORAGE_KEYS.PROFILES}_${patientId}`);
+    if (raw !== undefined) {
+      const profile = migrateProfile(raw);
+      // O nome vem do cadastro do paciente.
+      return patient ? { ...profile, paciente: patient.nome } : profile;
     }
-    return defaultProfile;
-  } catch (e) {
-    return defaultProfile;
   }
+  return patient ? planFromPatient(patient) : defaultProfile;
 }
 
-export function saveStoredPlanProfile(patientId: string, profile: PatientProfile) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(`${STORAGE_KEYS.PROFILES}_${patientId}`, JSON.stringify(profile));
-  } catch (e) {
-    console.error("Failed to save profile", e);
-  }
+export function saveStoredPlanProfile(patientId: string, profile: PatientProfile): boolean {
+  if (!hasStorage()) return false;
+  return writeJson(`${STORAGE_KEYS.PROFILES}_${patientId}`, { ...profile, atualizadoEm: new Date().toISOString() });
 }
 
 export function getStoredDiary(patientId: string): DiaryEntry[] {
-  if (typeof window === "undefined") return INITIAL_DIARY.filter((d) => d.pacienteId === patientId);
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.DIARY);
-    const all: DiaryEntry[] = raw ? JSON.parse(raw) : INITIAL_DIARY;
-    return all.filter((d) => d.pacienteId === patientId);
-  } catch (e) {
-    return INITIAL_DIARY.filter((d) => d.pacienteId === patientId);
-  }
+  return readList(STORAGE_KEYS.DIARY, INITIAL_DIARY, sanitizeDiaryEntry).filter((d) => d.pacienteId === patientId);
 }
 
-export function addStoredDiaryEntry(entry: DiaryEntry) {
-  if (typeof window === "undefined") return;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.DIARY);
-    const all: DiaryEntry[] = raw ? JSON.parse(raw) : INITIAL_DIARY;
-    all.unshift(entry);
-    localStorage.setItem(STORAGE_KEYS.DIARY, JSON.stringify(all));
-  } catch (e) {
-    console.error("Failed to add diary entry", e);
-  }
+export function addStoredDiaryEntry(entry: DiaryEntry): boolean {
+  if (!hasStorage()) return false;
+  const all = readList(STORAGE_KEYS.DIARY, INITIAL_DIARY, sanitizeDiaryEntry);
+  return writeJson(STORAGE_KEYS.DIARY, [entry, ...all]);
 }
 
 export function getStoredFinancial(): FinancialItem[] {
-  if (typeof window === "undefined") return INITIAL_FINANCIAL;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.FINANCIAL);
-    return raw ? JSON.parse(raw) : INITIAL_FINANCIAL;
-  } catch (e) {
-    return INITIAL_FINANCIAL;
-  }
+  return readList(STORAGE_KEYS.FINANCIAL, INITIAL_FINANCIAL, sanitizeFinancialItem);
 }
