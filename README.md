@@ -16,29 +16,43 @@ Inspirado na arquitetura e rigor de engenharia do ecossistema **MetricLab**, o p
 
 ---
 
+## 🧭 Fluxo de geração do plano
+
+Passo a passo guiado, com o painel **Meta × Planejado** fixo em todos os passos:
+
+1. **Paciente** — identificação e restrições (lactose, glúten, ovo, vegano… + termos livres).
+2. **Metas** — calculadora (Mifflin-St Jeor) como ponto de partida; o profissional ajusta.
+3. **Refeições** — quantas refeições e opções quiser. Os alimentos vêm da base **TACO** (591 itens) por busca com autocomplete tolerante a erro de digitação. kcal, macros e micronutrientes são **calculados**, nunca digitados. Cada item tem troca sugerida (mesmo grupo e preparo, mesmas kcal) e o botão **Completar** sugere itens que aproximam a opção da meta. Alimentos que conflitam com as restrições aparecem sinalizados.
+4. **Suplementos e receita** — micronutrientes do relatório somados dos alimentos (ou texto manual).
+5. **Revisão** — conferência (desvio da meta, refeição vazia, restrições, itens sem vínculo), salvar e imprimir.
+
+Pacientes ficam salvos no navegador (`localStorage`), com rascunho automático. Exportar/importar JSON continua disponível e aceita o formato antigo (migração automática).
+
+As recomendações são determinísticas e explicáveis (nenhuma usa IA) e as checagens de restrição são alertas baseados em grupo/nome do alimento: o nutricionista confirma.
+
 ## 📐 Estrutura do Projeto
 
 ```
-GabrielNutricionista/
-├── app/
-│   ├── globals.css          # Configuração do Tailwind CSS v4 e regras de impressão A4
-│   ├── layout.tsx           # Layout raiz com tipografia Newsreader (serif) e Inter (sans)
-│   └── page.tsx             # Dashboard reativo com tela dividida (Split-Screen)
+├── app/                      # layout, page (FoodsProvider + App)
 ├── components/
-│   ├── Navbar.tsx           # Barra superior com exportação JSON e acionamento de impressão
-│   ├── PatientEditor.tsx    # Painel de edição segmentado por abas clínicas
-│   └── ReportPreview.tsx    # Preview das 2 páginas A4 em tempo real com tipografia 9pt
+│   ├── App.tsx               # estado, rascunho, salvar, favoritos
+│   ├── Editor.tsx            # stepper de 5 passos
+│   ├── steps/                # Identificacao, Metas, Refeicoes, Extras, Revisao
+│   ├── GoalPanel.tsx         # meta × planejado
+│   ├── FoodPicker.tsx        # busca de alimentos
+│   └── ReportPreview.tsx     # relatório A4 de 2 páginas (9pt)
 ├── lib/
-│   ├── defaultProfile.ts    # Perfil padrão de referência (João Freire - 2.268 kcal)
-│   └── types.ts             # Tipagem estrita TypeScript de todas as entidades clínicas
-├── public/                  # Assets estáticos
-├── next.config.mjs          # Configuração de build Next.js
-├── postcss.config.mjs       # Pipeline PostCSS
-├── tsconfig.json            # Configuração de TypeScript
-└── package.json
+│   ├── types.ts              # modelo v2 (itens estruturados)
+│   ├── nutrition.ts          # cálculo, metas, saldo
+│   ├── foods.ts              # busca e restrições
+│   ├── recommend.ts          # substituições e completar
+│   ├── validate.ts           # conferência do plano
+│   ├── migrate.ts            # perfil legado → v2
+│   └── storage.ts            # pacientes, rascunho, favoritos
+├── data/taco/                # CSVs de origem (TACO 4ª ed., NEPA/UNICAMP)
+├── scripts/build-foods.mjs   # gera public/foods.json
+└── tests/                    # Vitest (lógica pura)
 ```
-
----
 
 ## 🚀 Como Executar Localmente
 
@@ -55,8 +69,10 @@ GabrielNutricionista/
 
 3. **Verificação de Tipos e Build de Produção:**
    ```bash
+   npm test
    npm run typecheck
    npm run build
+   npm run build:foods   # regenera public/foods.json a partir de data/taco
    ```
 
 ---

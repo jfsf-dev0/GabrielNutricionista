@@ -1,6 +1,9 @@
-import { PatientProfile } from "./types";
+import { migrateProfile } from "./migrate";
+import type { PatientProfile } from "./types";
 
-export const defaultProfile: PatientProfile = {
+/** Ficha original (formato v1), preservada como dado de referência. */
+const legacyModelo = {
+  id: "modelo-joao-freire",
   paciente: "João Freire",
   data: "24 de Setembro de 2025",
   fase: "Manutenção Calórica",
@@ -204,3 +207,5 @@ export const defaultProfile: PatientProfile = {
   mineraisStr: "<b>Minerais:</b> Sódio: 1.479,6mg · Potássio: 3.076,3mg · Fósforo: 1.284,8mg · Cálcio: 399,7mg · Magnésio: 213,5mg · <b>Ferro: 11,0mg</b> · Zinco: 11,6mg · Selênio: 43,9mcg",
   vitaminasStr: "<b>Vitaminas:</b> Vit. C: 169,7mg · Niacina (B3): 38,3mg · Folato (B9): 256,6mcg · Vit. B12: 4,6mcg · Vit. A: 164,8mcg · Vit. D: 1,9mcg · Vit. E: 5,5mg · B1: 1,0mg · B6: 1,1mg · B2: 0,7mg"
 };
+
+export const defaultProfile: PatientProfile = migrateProfile(legacyModelo);
