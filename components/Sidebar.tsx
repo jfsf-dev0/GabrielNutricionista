@@ -14,10 +14,9 @@ import {
   Settings,
   Smartphone,
   ChevronRight,
-  Sparkles,
   Command,
 } from "lucide-react";
-import { PRACTITIONER_GABRIEL } from "@/lib/store";
+import { usePractitioner } from "@/components/usePractitioner";
 import { usePortalHref } from "@/components/usePortalHref";
 
 interface SidebarProps {
@@ -26,6 +25,7 @@ interface SidebarProps {
 
 export default function Sidebar({ onOpenCommand }: SidebarProps) {
   const pathname = usePathname();
+  const practitioner = usePractitioner();
   const portalHref = usePortalHref();
 
   const navigation = [
@@ -150,10 +150,10 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-xs font-medium text-white truncate">
-              {PRACTITIONER_GABRIEL.nome}
+              {practitioner.nome}
             </div>
             <div className="text-[10px] text-ondark-muted font-mono truncate">
-              {PRACTITIONER_GABRIEL.crn}
+              {practitioner.crn}
             </div>
           </div>
         </div>

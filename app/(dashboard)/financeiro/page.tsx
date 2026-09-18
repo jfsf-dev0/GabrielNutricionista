@@ -3,23 +3,30 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  Wallet,
-  ArrowUpRight,
-  CheckCircle2,
-  Clock,
-  AlertTriangle,
-  Plus,
-  Search,
-  Filter,
-  CreditCard,
   QrCode,
 } from "lucide-react";
-import { getStoredFinancial } from "@/lib/store";
+import { useNotify } from "@/components/Feedback";
+import { getStoredFinancial, getStoredPractitioner } from "@/lib/store";
 import { FinancialItem } from "@/lib/types";
 
 export default function FinancialManagementPage() {
   const [items, setItems] = useState<FinancialItem[]>([]);
   const [filterStatus, setFilterStatus] = useState("todos");
+  const notify = useNotify();
+
+  const copyPix = async () => {
+    const chave = getStoredPractitioner().chavePix;
+    if (!chave) {
+      notify("Cadastre a chave PIX em Configurações antes de copiar.", "erro");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(chave);
+      notify("Chave PIX copiada para a área de transferência.", "sucesso");
+    } catch {
+      notify("Não foi possível copiar automaticamente. Copie manualmente: " + chave, "erro");
+    }
+  };
 
   useEffect(() => {
     setItems(getStoredFinancial());
@@ -51,7 +58,7 @@ export default function FinancialManagementPage() {
         </div>
 
         <button
-          onClick={() => alert("Chave PIX da clínica copiada para a área de transferência!")}
+          onClick={copyPix}
           className="flex items-center gap-1.5 px-3.5 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium transition-colors shadow-xs self-start cursor-pointer"
         >
           <QrCode className="w-3.5 h-3.5" />

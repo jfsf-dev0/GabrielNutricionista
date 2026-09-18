@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+import { FeedbackProvider } from "@/components/Feedback";
 import { FoodsProvider } from "@/components/FoodsProvider";
 
 export default function RootLayout({
@@ -31,7 +32,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${inter.variable} ${newsreader.variable} h-full`}>
       <body className="h-full flex flex-col antialiased selection:bg-stone-200">
         <FoodsProvider>
-          {children}
+          <FeedbackProvider>{children}</FeedbackProvider>
         </FoodsProvider>
       </body>
     </html>

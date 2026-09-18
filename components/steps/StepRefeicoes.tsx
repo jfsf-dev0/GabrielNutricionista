@@ -10,6 +10,7 @@ import { suggestSubstitutions, suggestToComplete } from "@/lib/recommend";
 import { fmt } from "@/lib/report";
 import type { Food, Meal, MealItem, MealOption } from "@/lib/types";
 import FoodPicker from "../FoodPicker";
+import { useConfirm } from "../Feedback";
 import { useFoods } from "../FoodsProvider";
 import { Field, NumInput, TextInput, inputCls } from "../ui";
 import type { StepProps } from "./StepIdentificacao";
@@ -23,6 +24,7 @@ const signed = (v: number, dec = 1) => `${v > 0 ? "+" : ""}${fmt(v, dec)}`;
 
 export default function StepRefeicoes({ profile, onChange, favoritos, onFoodUsed }: Props) {
   const { foods, index } = useFoods();
+  const confirm = useConfirm();
   const [activeId, setActiveId] = useState<number>(profile.meals[0]?.id ?? 1);
   const [subFor, setSubFor] = useState<string | null>(null);
   const [completeFor, setCompleteFor] = useState<string | null>(null);
@@ -46,8 +48,9 @@ export default function StepRefeicoes({ profile, onChange, favoritos, onFoodUsed
     setMeals([...profile.meals, newMeal(id, `Refeição ${id}`)]);
     setActiveId(id);
   };
-  const removeMeal = () => {
-    if (!confirm(`Remover “${meal.nome}” e todas as suas opções?`)) return;
+  const removeMeal = async () => {
+    const ok = await confirm({ titulo: "Remover refeição?", mensagem: `“${meal.nome}” e todas as suas opções serão removidas.`, confirmar: "Remover", perigo: true });
+    if (!ok) return;
     const rest = profile.meals.filter((m) => m.id !== meal.id);
     setMeals(rest);
     setActiveId(rest[0]?.id ?? 1);

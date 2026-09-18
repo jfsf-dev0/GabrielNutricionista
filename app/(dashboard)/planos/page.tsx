@@ -3,22 +3,14 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  UtensilsCrossed,
   Plus,
-  Search,
-  FileText,
   Printer,
-  ChevronRight,
-  TrendingUp,
-  Clock,
-  Sparkles,
 } from "lucide-react";
-import { getStoredPatients, getStoredPlanProfile } from "@/lib/store";
+import { getStoredPatients } from "@/lib/store";
 import { Patient } from "@/lib/types";
 
 export default function PlansDirectoryPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setPatients(getStoredPatients());

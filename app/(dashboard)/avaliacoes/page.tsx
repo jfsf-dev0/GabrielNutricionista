@@ -3,11 +3,8 @@
 import React, { useState, useEffect } from "react";
 import {
   Scale,
-  Calculator,
   Activity,
   Flame,
-  CheckCircle2,
-  TrendingUp,
   Sparkles,
 } from "lucide-react";
 import {
@@ -15,7 +12,6 @@ import {
   calcHarrisBenedict,
   calcCunningham,
   calcGET,
-  calcIMC,
   calcJacksonPollock3,
   calcBodyComposition,
   planMacros,
@@ -76,7 +72,6 @@ export default function AssessmentsCalculatorPage() {
   };
 
   // Calculations
-  const imcData = calcIMC(peso, altura);
   const tmbMifflin = calcMifflinStJeor({ pesoKg: peso, alturaCm: altura, idadeAnos: idade, genero });
   const tmbHarris = calcHarrisBenedict({ pesoKg: peso, alturaCm: altura, idadeAnos: idade, genero });
   const getCalculated = calcGET(tmbMifflin, atividade);

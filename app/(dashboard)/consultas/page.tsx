@@ -3,15 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  CalendarDays,
   Plus,
-  Clock,
   Play,
   CheckCircle2,
-  Users,
   Video,
   MapPin,
-  ChevronRight,
 } from "lucide-react";
 import {
   getStoredConsultations,

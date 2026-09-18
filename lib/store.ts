@@ -3,7 +3,7 @@ import { defaultProfile } from "./defaultProfile";
 import { restrictionsFromStrings } from "./foods";
 import { migrateProfile } from "./migrate";
 import { emptyProfile } from "./profile";
-import { sanitizeConsultation, sanitizeDiaryEntry, sanitizeFinancialItem, sanitizePatient } from "./store-sanitize";
+import { sanitizeConsultation, sanitizeDiaryEntry, sanitizeFinancialItem, sanitizePatient, sanitizePractitioner } from "./store-sanitize";
 
 export const PRACTITIONER_GABRIEL: PractitionerProfile = {
   nome: "Gabriel Alves",
@@ -348,6 +348,7 @@ const STORAGE_KEYS = {
   PROFILES: "gabriel_nutri_profiles_v1",
   DIARY: "gabriel_nutri_diary_v1",
   FINANCIAL: "gabriel_nutri_financial_v1",
+  PRACTITIONER: "gabriel_nutri_practitioner_v1",
 };
 
 const hasStorage = () => typeof window !== "undefined" && typeof localStorage !== "undefined";
@@ -485,4 +486,15 @@ export function addStoredDiaryEntry(entry: DiaryEntry): boolean {
 
 export function getStoredFinancial(): FinancialItem[] {
   return readList(STORAGE_KEYS.FINANCIAL, INITIAL_FINANCIAL, sanitizeFinancialItem);
+}
+
+export function getStoredPractitioner(): PractitionerProfile {
+  if (!hasStorage()) return PRACTITIONER_GABRIEL;
+  const raw = readJson(STORAGE_KEYS.PRACTITIONER);
+  return raw === undefined ? PRACTITIONER_GABRIEL : sanitizePractitioner(raw, PRACTITIONER_GABRIEL);
+}
+
+export function saveStoredPractitioner(p: PractitionerProfile): boolean {
+  if (!hasStorage()) return false;
+  return writeJson(STORAGE_KEYS.PRACTITIONER, sanitizePractitioner(p, PRACTITIONER_GABRIEL));
 }

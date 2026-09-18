@@ -11,6 +11,7 @@ import { freshPlanFor, getStoredPlanProfile, saveStoredPlanProfile } from "@/lib
 import type { Patient, PatientProfile } from "@/lib/types";
 import { validatePlan } from "@/lib/validate";
 import Editor from "./Editor";
+import { useConfirm, useNotify } from "./Feedback";
 import { useFoods } from "./FoodsProvider";
 import ReportPreview from "./ReportPreview";
 
@@ -25,23 +26,32 @@ function withPatientRestrictions(profile: PatientProfile, patient: Patient): Pat
 /** Construtor de plano de UM paciente: carrega, valida e salva automaticamente no armazenamento do paciente. */
 export default function PlanBuilder({ patient }: { patient: Patient }) {
   const { index } = useFoods();
+  const confirm = useConfirm();
+  const notify = useNotify();
   const [profile, setProfile] = useState<PatientProfile | null>(null);
   const [save, setSave] = useState<SaveState>({ estado: "carregando" });
   const [favoritos, setFavoritos] = useState<Map<number, number>>(new Map());
   const fav = useRef<Favoritos | null>(null);
   const dirty = useRef(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  // Último plano editado e último plano gravado: o que estiver pendente é salvo ao sair.
+  const latest = useRef<PatientProfile | null>(null);
+  const saved = useRef<PatientProfile | null>(null);
 
   useEffect(() => {
     fav.current = browserFavoritos();
     setFavoritos(fav.current.all());
-    setProfile(withPatientRestrictions(getStoredPlanProfile(patient.id), patient));
+    const inicial = withPatientRestrictions(getStoredPlanProfile(patient.id), patient);
+    setProfile(inicial);
+    saved.current = inicial;
+    latest.current = null;
     dirty.current = false;
   }, [patient]);
 
   const persist = useCallback(
     (p: PatientProfile) => {
       const ok = saveStoredPlanProfile(patient.id, p);
+      if (ok) saved.current = p;
       setSave(ok ? { estado: "salvo", em: new Date() } : { estado: "erro" });
     },
     [patient.id],
@@ -50,9 +60,27 @@ export default function PlanBuilder({ patient }: { patient: Patient }) {
   // Salvamento automático (só depois de uma edição do usuário).
   useEffect(() => {
     if (!profile || !dirty.current) return;
+    latest.current = profile;
     const t = setTimeout(() => persist(profile), 400);
     return () => clearTimeout(t);
   }, [profile, persist]);
+
+  // Não perder a última edição: grava o pendente ao trocar de página, fechar ou ocultar a aba.
+  useEffect(() => {
+    const flush = () => {
+      if (latest.current && latest.current !== saved.current) {
+        if (saveStoredPlanProfile(patient.id, latest.current)) saved.current = latest.current;
+      }
+    };
+    const onHide = () => document.visibilityState === "hidden" && flush();
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", onHide);
+      flush(); // desmontagem (navegação interna)
+    };
+  }, [patient.id]);
 
   const change = useCallback((p: PatientProfile) => {
     dirty.current = true;
@@ -95,19 +123,26 @@ export default function PlanBuilder({ patient }: { patient: Patient }) {
     e.target.value = "";
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
+    reader.onload = async (ev) => {
+      let imported: PatientProfile;
       try {
-        const imported = migrateProfile(JSON.parse(String(ev.target?.result)));
-        if (confirm(`Substituir o plano atual de ${patient.nome} pelo arquivo importado?`)) change(withPatientRestrictions({ ...imported, id: profile?.id ?? imported.id }, patient));
+        imported = migrateProfile(JSON.parse(String(ev.target?.result)));
       } catch {
-        alert("Arquivo JSON inválido.");
+        notify("Arquivo JSON inválido.", "erro");
+        return;
+      }
+      const ok = await confirm({ titulo: "Importar plano?", mensagem: `O plano atual de ${patient.nome} será substituído pelo arquivo importado.`, confirmar: "Importar", perigo: true });
+      if (ok) {
+        change(withPatientRestrictions({ ...imported, id: profile?.id ?? imported.id }, patient));
+        notify("Plano importado.", "sucesso");
       }
     };
     reader.readAsText(file);
   };
 
-  const clearPlan = () => {
-    if (confirm(`Limpar todas as refeições do plano de ${patient.nome}? Esta ação não pode ser desfeita.`)) change(withPatientRestrictions(freshPlanFor(patient), patient));
+  const clearPlan = async () => {
+    const ok = await confirm({ titulo: "Limpar plano?", mensagem: `Todas as refeições do plano de ${patient.nome} serão removidas. Esta ação não pode ser desfeita.`, confirmar: "Limpar plano", perigo: true });
+    if (ok) change(withPatientRestrictions(freshPlanFor(patient), patient));
   };
 
   if (!profile || !totals) return <div className="p-8 text-xs text-stone-600">Carregando plano…</div>;

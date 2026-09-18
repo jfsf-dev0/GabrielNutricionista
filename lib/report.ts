@@ -27,13 +27,15 @@ type SemDado = Partial<Record<NutrientKey, number>>;
 
 const join = (n: Nutrients, specs: Spec[], semDado: SemDado) =>
   specs
-    .filter(([k]) => n[k] !== undefined)
-    .map(([k, label, un]) => `${label}${semDado[k] ? "*" : ""}: ${fmt(n[k]!, 1)} ${un}`)
+    .filter(([k]) => n[k] !== undefined || semDado[k])
+    .map(([k, label, un]) =>
+      n[k] === undefined ? `${label}*: sem dado` : `${label}${semDado[k] ? "*" : ""}: ${fmt(n[k]!, 1)} ${un}`,
+    )
     .join(" · ");
 
 /**
- * Micronutrientes somados dos alimentos, em 3 linhas. Só entram os nutrientes presentes na base.
- * Nutrientes em que algum alimento usado não tem dado levam "*" (soma parcial, subestimada).
+ * Micronutrientes somados dos alimentos, em 3 linhas. Nutrientes em que algum alimento usado não tem dado
+ * levam "*" (soma parcial, subestimada); se nenhum alimento usado tem o dado, aparece "sem dado" em vez de sumir.
  */
 export function microGroups(n: Nutrients, semDado: SemDado = {}) {
   const grupos = {

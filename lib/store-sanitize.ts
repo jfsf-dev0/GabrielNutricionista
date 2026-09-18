@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- lê JSON não confiável (importação/localStorage); cada campo é validado e limitado antes de sair daqui */
 import { clampNum } from "./limits";
-import type { AnthropometricData, Consultation, DiaryEntry, FinancialItem, Patient, PatientGoal, PatientStatus } from "./types";
+import type { AnthropometricData, Consultation, DiaryEntry, FinancialItem, Patient, PatientGoal, PatientStatus, PractitionerProfile } from "./types";
 
 const isObj = (v: unknown): v is Record<string, any> => typeof v === "object" && v !== null && !Array.isArray(v);
 const str = (v: unknown, fb = ""): string => (typeof v === "string" ? v.slice(0, 5000) : fb);
@@ -107,4 +108,16 @@ export function sanitizeFinancialItem(raw: unknown): FinancialItem | null {
   };
   if (typeof raw.dataPagamento === "string") f.dataPagamento = str(raw.dataPagamento);
   return f;
+}
+
+/** Perfil do profissional: campos inválidos ou ausentes caem no valor `base`. */
+export function sanitizePractitioner(raw: unknown, base: PractitionerProfile): PractitionerProfile {
+  const o = isObj(raw) ? raw : {};
+  const f = (k: keyof Omit<PractitionerProfile, "chavePix">) => (typeof o[k] === "string" && o[k].trim() ? str(o[k]) : base[k]);
+  const out: PractitionerProfile = {
+    nome: f("nome"), titulo: f("titulo"), crn: f("crn"), telefone: f("telefone"),
+    email: f("email"), clinica: f("clinica"), endereco: f("endereco"), cidade: f("cidade"),
+  };
+  if (typeof o.chavePix === "string" && o.chavePix.trim()) out.chavePix = str(o.chavePix).trim().slice(0, 200);
+  return out;
 }

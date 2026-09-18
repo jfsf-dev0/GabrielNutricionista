@@ -8,14 +8,7 @@ import {
   CheckCircle2,
   Circle,
   FileText,
-  Calendar,
-  Sparkles,
-  ChevronRight,
-  TrendingUp,
   MessageCircle,
-  Clock,
-  Printer,
-  Camera,
   Flame,
 } from "lucide-react";
 import {
@@ -23,14 +16,15 @@ import {
   getStoredPlanProfile,
   getStoredDiary,
   addStoredDiaryEntry,
-  PRACTITIONER_GABRIEL,
 } from "@/lib/store";
+import { usePractitioner } from "@/components/usePractitioner";
 import { hydrationGoalMl } from "@/lib/nutrition";
-import { Patient, PatientProfile, DiaryEntry } from "@/lib/types";
+import { Patient, PatientProfile } from "@/lib/types";
 
 export default function PatientPortalPage() {
   const params = useParams();
   const token = String(params?.token ?? "");
+  const practitioner = usePractitioner();
 
   const [patient, setPatient] = useState<Patient | null>(null);
   const [profile, setProfile] = useState<PatientProfile | null>(null);
@@ -375,14 +369,14 @@ export default function PatientPortalPage() {
           <div className="flex items-center justify-between">
             <div>
               <div className="font-bold text-white text-xs">
-                {PRACTITIONER_GABRIEL.nome}
+                {practitioner.nome}
               </div>
               <div className="text-[10px] text-ondark-muted font-mono">
-                {PRACTITIONER_GABRIEL.crn}
+                {practitioner.crn}
               </div>
             </div>
             <a
-              href={`https://wa.me/5511987654321?text=Olá Gabriel, tenho uma dúvida sobre meu plano alimentar.`}
+              href={`https://wa.me/55${practitioner.telefone.replace(/\D/g, "")}?text=${encodeURIComponent(`Olá ${practitioner.nome.split(" ")[0]}, tenho uma dúvida sobre meu plano alimentar.`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium transition-colors"

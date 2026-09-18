@@ -8,12 +8,10 @@ import {
   TrendingUp,
   Wallet,
   Play,
-  Clock,
   AlertTriangle,
   CheckCircle2,
   ChevronRight,
   ArrowUpRight,
-  Sparkles,
   Utensils,
   Plus,
   FileText,
@@ -23,7 +21,6 @@ import {
   getStoredPatients,
   getStoredConsultations,
   getStoredDiary,
-  getStoredFinancial,
 } from "@/lib/store";
 import { usePortalHref } from "@/components/usePortalHref";
 import { Patient, Consultation, DiaryEntry } from "@/lib/types";
@@ -39,8 +36,6 @@ export default function DashboardHomePage() {
     setConsultations(getStoredConsultations());
     setRecentDiary(getStoredDiary());
   }, []);
-
-  const activePatients = patients.filter((p) => p.status === "ativo").length;
   const alertPatients = patients.filter((p) => p.status === "alerta");
   const todayConsultations = consultations.filter((c) => c.horario);
 

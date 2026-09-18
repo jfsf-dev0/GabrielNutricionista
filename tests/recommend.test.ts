@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { foods, arroz, batata, macarrao, item } from "./fixtures";
+import { foods, arroz, item } from "./fixtures";
 import { suggestSubstitutions, suggestToComplete } from "@/lib/recommend";
 import type { Food } from "@/lib/types";
 

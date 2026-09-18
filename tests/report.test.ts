@@ -38,6 +38,12 @@ describe("microGroups — soma parcial", () => {
     expect(g.minerais).toBe("Sódio: 500 mg · Ferro*: 3 mg");
     expect(g.parcial).toBe(true);
   });
+  it("nutriente que nenhum alimento usado tem aparece como 'sem dado', não some do relatório", () => {
+    // fibras ausentes de todos os alimentos (n sem a chave), mas contadas em semDado
+    const g = microGroups({ colesterol: 100 }, { fibras: 2 });
+    expect(g.lipideos).toBe("Fibras*: sem dado · Colesterol: 100 mg");
+    expect(g.parcial).toBe(true);
+  });
   it("sem lacunas não marca nada", () => {
     const g = microGroups({ fibras: 10 }, {});
     expect(g.lipideos).toBe("Fibras: 10 g");

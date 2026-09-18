@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- lê JSON não confiável (importação/localStorage); cada campo é validado e limitado antes de sair daqui */
 import { clampNum, MAX_GRAMAS, MAX_GRAMAS_MACRO, MAX_KCAL, MAX_TEXTO } from "./limits";
 import { emptyProfile, uid } from "./profile";
 import type {

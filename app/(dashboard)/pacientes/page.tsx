@@ -3,13 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  Users,
   Search,
   Plus,
-  ArrowRight,
   AlertTriangle,
   CheckCircle2,
-  Calendar,
   Utensils,
   Play,
   Filter,

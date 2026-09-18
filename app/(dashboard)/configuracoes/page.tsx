@@ -1,17 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Settings,
   User,
-  ShieldCheck,
   Building,
   Save,
   CheckCircle2,
   FileText,
-  Lock,
 } from "lucide-react";
-import { PRACTITIONER_GABRIEL } from "@/lib/store";
+import { useNotify } from "@/components/Feedback";
+import { getStoredPractitioner, PRACTITIONER_GABRIEL, saveStoredPractitioner } from "@/lib/store";
 
 export default function SettingsPage() {
   const [nome, setNome] = useState(PRACTITIONER_GABRIEL.nome);
@@ -22,10 +20,24 @@ export default function SettingsPage() {
   const [clinica, setClinica] = useState(PRACTITIONER_GABRIEL.clinica);
   const [endereco, setEndereco] = useState(PRACTITIONER_GABRIEL.endereco);
   const [cidade, setCidade] = useState(PRACTITIONER_GABRIEL.cidade);
+  const [chavePix, setChavePix] = useState(PRACTITIONER_GABRIEL.chavePix ?? "");
   const [saved, setSaved] = useState(false);
+  const notify = useNotify();
+
+  // Carrega o perfil salvo neste navegador.
+  useEffect(() => {
+    const p = getStoredPractitioner();
+    setNome(p.nome); setCrn(p.crn); setTitulo(p.titulo); setTelefone(p.telefone); setEmail(p.email);
+    setClinica(p.clinica); setEndereco(p.endereco); setCidade(p.cidade); setChavePix(p.chavePix ?? "");
+  }, []);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    const ok = saveStoredPractitioner({ nome, titulo, crn, telefone, email, clinica, endereco, cidade, chavePix: chavePix.trim() || undefined });
+    if (!ok) {
+      notify("Não foi possível salvar (armazenamento cheio ou bloqueado).", "erro");
+      return;
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -156,6 +168,19 @@ export default function SettingsPage() {
                 type="text"
                 value={cidade}
                 onChange={(e) => setCidade(e.target.value)}
+                className="w-full border border-stone-300 rounded-lg p-2 text-stone-900 focus:outline-hidden focus:border-stone-900"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="fld-chave-pix" className="block text-[11px] text-stone-600 font-medium mb-1">
+                Chave PIX da clínica
+              </label>
+              <input id="fld-chave-pix"
+                type="text"
+                value={chavePix}
+                onChange={(e) => setChavePix(e.target.value)}
+                placeholder="CPF/CNPJ, e-mail, telefone ou chave aleatória"
                 className="w-full border border-stone-300 rounded-lg p-2 text-stone-900 focus:outline-hidden focus:border-stone-900"
               />
             </div>

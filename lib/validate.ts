@@ -10,6 +10,7 @@ export interface Issue {
 
 const AVISO_PCT = 5;
 const ERRO_PCT = 10;
+const OPCOES_DIVERGENTES_PCT = 15;
 
 export function validatePlan(profile: PatientProfile, foods: FoodIndex): Issue[] {
   const issues: Issue[] = [];
@@ -54,6 +55,16 @@ export function validatePlan(profile: PatientProfile, foods: FoodIndex): Issue[]
   const semFibras = totals.semDado.fibras ?? 0;
   if (semFibras > 0) {
     add("aviso", "dados-incompletos", `Fibras somadas parcialmente: ${semFibras} alimento(s) do plano não têm esse dado na tabela de origem.`);
+  }
+
+  for (const m of profile.meals) {
+    const kcals = m.opcoes.map((o) => optionTotals(o, foods)).filter((t) => !t.vazia).map((t) => t.macros.kcal);
+    if (kcals.length < 2) continue;
+    const min = Math.min(...kcals), max = Math.max(...kcals);
+    const pct = max > 0 ? ((max - min) / max) * 100 : 0;
+    if (pct > OPCOES_DIVERGENTES_PCT) {
+      add("aviso", "opcoes-divergentes", `As opções de “${m.nome}” diferem ${pct.toFixed(0)}% em calorias (${min.toFixed(0)}–${max.toFixed(0)} kcal): o paciente pode ficar muito acima ou abaixo da meta conforme a escolha.`);
+    }
   }
 
   const conflitos = new Set<string>();

@@ -4,13 +4,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Search,
-  User,
   UtensilsCrossed,
   Calendar,
   Apple,
   Activity,
   ArrowRight,
-  Sparkles,
   X,
 } from "lucide-react";
 import { getStoredPatients } from "@/lib/store";

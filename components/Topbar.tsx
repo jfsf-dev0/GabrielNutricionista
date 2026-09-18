@@ -8,10 +8,7 @@ import {
   Plus,
   Play,
   Search,
-  CheckCircle2,
   AlertTriangle,
-  Clock,
-  ExternalLink,
 } from "lucide-react";
 
 interface TopbarProps {

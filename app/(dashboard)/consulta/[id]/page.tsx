@@ -6,14 +6,10 @@ import Link from "next/link";
 import {
   Clock,
   CheckCircle2,
-  AlertTriangle,
   Scale,
   BookOpen,
-  Utensils,
-  Save,
   Play,
   Pause,
-  RotateCcw,
   ArrowLeft,
   Sparkles,
   TrendingDown,
@@ -27,9 +23,11 @@ import {
   getStoredPlanProfile,
 } from "@/lib/store";
 import { Patient, Consultation, PatientProfile } from "@/lib/types";
-import { calcIMC, calcBodyComposition } from "@/lib/calc";
+import { useNotify } from "@/components/Feedback";
+import { calcIMC } from "@/lib/calc";
 
 export default function ConsultationLivePage() {
+  const notify = useNotify();
   const params = useParams();
   const router = useRouter();
   const patientId = String(params?.id ?? "");
@@ -140,7 +138,7 @@ export default function ConsultationLivePage() {
 
     saveStoredConsultations([newCons, ...allConsultations]);
 
-    alert("Consulta finalizada com sucesso! Prontuário e métricas atualizados.");
+    notify("Consulta finalizada. Prontuário e métricas atualizados.", "sucesso");
     router.push(`/pacientes/${patient.id}`);
   };
 

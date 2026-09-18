@@ -41,3 +41,26 @@ describe("validatePlan", () => {
     expect(validatePlan(p, byId).filter((i) => i.nivel === "erro")).toEqual([]);
   });
 });
+
+describe("validatePlan — opções divergentes", () => {
+  const ex = { kcal: 0, p: 0, c: 0, l: 0 };
+  const mealOpts = (a: number, b: number) => ({
+    id: 1, nome: "Almoço", horario: "",
+    opcoes: [option([item(1, a)], ex), option([item(1, b)], ex)],
+  });
+  it("avisa quando as opções da mesma refeição diferem mais de 15% em calorias", () => {
+    const p = baseProfile({ prot: 0, carbo: 0, gord: 0, meals: [mealOpts(100, 200)] });
+    const w = validatePlan(p, byId).find((i) => i.codigo === "opcoes-divergentes");
+    expect(w?.nivel).toBe("aviso");
+    expect(w?.mensagem).toMatch(/Almoço/);
+    expect(w?.mensagem).toMatch(/50%/);
+  });
+  it("opções parecidas não geram aviso", () => {
+    const p = baseProfile({ prot: 0, carbo: 0, gord: 0, meals: [mealOpts(100, 110)] });
+    expect(msgs(p)).not.toContain("aviso:opcoes-divergentes");
+  });
+  it("opção vazia não conta", () => {
+    const p = baseProfile({ prot: 0, carbo: 0, gord: 0, meals: [{ id: 1, nome: "x", horario: "", opcoes: [option([item(1, 100)], ex), option([], ex)] }] });
+    expect(msgs(p)).not.toContain("aviso:opcoes-divergentes");
+  });
+});

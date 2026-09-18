@@ -111,3 +111,30 @@ describe("store — token do portal", () => {
     expect(s.getPatientForPlanRoute("nao-existe")).toBeNull();
   });
 });
+
+describe("store — perfil do profissional", () => {
+  beforeEach(() => vi.unstubAllGlobals());
+
+  it("sem nada salvo devolve o perfil padrão", async () => {
+    installStorage();
+    const s = await load();
+    expect(s.getStoredPractitioner()).toMatchObject({ nome: s.PRACTITIONER_GABRIEL.nome, crn: s.PRACTITIONER_GABRIEL.crn });
+  });
+  it("salva e lê de volta, inclusive a chave PIX", async () => {
+    installStorage();
+    const s = await load();
+    expect(s.saveStoredPractitioner({ ...s.PRACTITIONER_GABRIEL, nome: "Outro Nome", chavePix: "a@b.com" })).toBe(true);
+    expect(s.getStoredPractitioner()).toMatchObject({ nome: "Outro Nome", chavePix: "a@b.com" });
+  });
+  it("conteúdo corrompido volta ao padrão; campos inválidos são completados", async () => {
+    installStorage({ gabriel_nutri_practitioner_v1: "{ruim" });
+    const s = await load();
+    expect(s.getStoredPractitioner().nome).toBe(s.PRACTITIONER_GABRIEL.nome);
+    installStorage({ gabriel_nutri_practitioner_v1: JSON.stringify({ nome: 5, crn: "CRN-1", chavePix: 9 }) });
+    const s2 = await load();
+    const p = s2.getStoredPractitioner();
+    expect(p.crn).toBe("CRN-1");
+    expect(p.nome).toBe(s2.PRACTITIONER_GABRIEL.nome);
+    expect(p.chavePix).toBeUndefined();
+  });
+});

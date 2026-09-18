@@ -265,4 +265,6 @@ export interface PractitionerProfile {
   clinica: string;
   endereco: string;
   cidade: string;
+  /** Chave PIX da clínica (usada no botão de copiar do Financeiro). */
+  chavePix?: string;
 }

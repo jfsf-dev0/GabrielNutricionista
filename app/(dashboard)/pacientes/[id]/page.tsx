@@ -4,10 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
-  User,
   Activity,
   FileText,
-  Calendar,
   Utensils,
   BookOpen,
   DollarSign,
@@ -19,7 +17,6 @@ import {
   TrendingUp,
   Droplets,
   Scale,
-  Sparkles,
   Edit3,
 } from "lucide-react";
 import {
