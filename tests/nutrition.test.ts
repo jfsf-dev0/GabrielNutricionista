@@ -122,3 +122,23 @@ describe("hydrationGoalMl", () => {
     expect(hydrationGoalMl("0,1 L", 70)).toBe(500);
   });
 });
+
+describe("dayTotals — nutrientes sem dado", () => {
+  const meal = (opcoes: any[]) => ({ id: 1, nome: "R", horario: "", opcoes });
+  it("conta alimentos usados que não trazem o nutriente", () => {
+    // arroz tem fibras; frango não tem
+    const p = baseProfile({ meals: [meal([option([item(1, 100), item(2, 100)])])] });
+    const d = dayTotals(p, byId);
+    expect(d.semDado.fibras).toBe(1);
+    expect(d.semDado.ferro).toBe(1); // frango sem ferro
+    expect(d.semDado.kcal).toBeUndefined();
+  });
+  it("alimento repetido em opções conta uma vez; itens sem gramas e notas não contam", () => {
+    const p = baseProfile({ meals: [meal([option([item(2, 100)]), option([item(2, 50), item(2, 0)])])] });
+    expect(dayTotals(p, byId).semDado.fibras).toBe(1);
+  });
+  it("plano sem lacunas não acusa nada", () => {
+    const p = baseProfile({ meals: [meal([option([item(1, 100)])])] });
+    expect(dayTotals(p, byId).semDado.fibras).toBeUndefined();
+  });
+});

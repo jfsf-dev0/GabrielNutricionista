@@ -2,17 +2,17 @@
 
 import React from "react";
 import { Plus, Trash2 } from "lucide-react";
-import { microGroups } from "@/lib/report";
+import { microGroups, NOTA_SOMA_PARCIAL } from "@/lib/report";
 import { uid } from "@/lib/profile";
-import type { Nutrients } from "@/lib/types";
+import type { NutrientKey, Nutrients } from "@/lib/types";
 import { Field, SectionTitle, TextInput, inputCls } from "../ui";
 import type { StepProps } from "./StepIdentificacao";
 
-export default function StepExtras({ profile, onChange, nutrientes }: StepProps & { nutrientes: Nutrients }) {
+export default function StepExtras({ profile, onChange, nutrientes, semDado }: StepProps & { nutrientes: Nutrients; semDado: Partial<Record<NutrientKey, number>> }) {
   const set = <K extends keyof typeof profile>(k: K, v: (typeof profile)[K]) => onChange({ ...profile, [k]: v });
   const patchSup = (i: number, patch: Partial<(typeof profile.suplementos)[number]>) =>
     set("suplementos", profile.suplementos.map((s, j) => (j === i ? { ...s, ...patch } : s)));
-  const auto = microGroups(nutrientes);
+  const auto = microGroups(nutrientes, semDado);
 
   return (
     <div className="space-y-5">
@@ -62,6 +62,7 @@ export default function StepExtras({ profile, onChange, nutrientes }: StepProps 
             <div><b>Fibras e colesterol:</b> {auto.lipideos || "—"}</div>
             <div><b>Minerais:</b> {auto.minerais || "—"}</div>
             <div><b>Vitaminas:</b> {auto.vitaminas || "—"}</div>
+            {auto.parcial && <p className="text-[10px] text-amber-800 pt-1">{NOTA_SOMA_PARCIAL}</p>}
             <p className="text-[10px] text-stone-400 pt-1">
               Somados dos alimentos vinculados (média das opções). A TACO não traz B12, folato, vitamina D/E, selênio nem perfil de ácidos graxos;
               itens sem vínculo não entram. Use “Texto manual” se precisar desses dados.

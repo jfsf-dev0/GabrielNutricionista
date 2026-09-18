@@ -1,0 +1,460 @@
+[
+ {
+  "id": 410,
+  "nome": "Frango, peito, sem pele, grelhado",
+  "medidas": [
+   {
+    "nome": "1 filé médio",
+    "gramas": 120
+   },
+   {
+    "nome": "1 filé grande",
+    "gramas": 150
+   },
+   {
+    "nome": "1 colher de sopa picado",
+    "gramas": 25
+   },
+   {
+    "nome": "Porção de 100g",
+    "gramas": 100
+   }
+  ]
+ },
+ {
+  "id": 488,
+  "nome": "Ovo, de galinha, inteiro, cozido/10minutos",
+  "medidas": [
+   {
+    "nome": "1 unidade média",
+    "gramas": 50
+   },
+   {
+    "nome": "2 unidades médias",
+    "gramas": 100
+   },
+   {
+    "nome": "3 unidades médias",
+    "gramas": 150
+   }
+  ]
+ },
+ {
+  "id": 486,
+  "nome": "Ovo, de galinha, clara, cozida/10minutos",
+  "medidas": [
+   {
+    "nome": "1 clara média",
+    "gramas": 33
+   },
+   {
+    "nome": "3 claras médias",
+    "gramas": 100
+   },
+   {
+    "nome": "1 xícara de claras",
+    "gramas": 240
+   }
+  ]
+ },
+ {
+  "id": 377,
+  "nome": "Carne, bovina, patinho, sem gordura, grelhado",
+  "medidas": [
+   {
+    "nome": "1 bife médio",
+    "gramas": 120
+   },
+   {
+    "nome": "1 colher de sopa cheia (moído)",
+    "gramas": 30
+   },
+   {
+    "nome": "4 colheres de sopa cheias",
+    "gramas": 120
+   },
+   {
+    "nome": "Porção de 150g",
+    "gramas": 150
+   }
+  ]
+ },
+ {
+  "id": 317,
+  "nome": "Salmão, sem pele, fresco, grelhado",
+  "medidas": [
+   {
+    "nome": "1 posta média",
+    "gramas": 140
+   },
+   {
+    "nome": "1 filé grande",
+    "gramas": 200
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "nome": "Arroz, tipo 1, cozido",
+  "medidas": [
+   {
+    "nome": "1 colher de sopa cheia",
+    "gramas": 25
+   },
+   {
+    "nome": "1 escumadeira rasa",
+    "gramas": 100
+   },
+   {
+    "nome": "1 escumadeira cheia",
+    "gramas": 150
+   },
+   {
+    "nome": "1 xícara de chá cheia",
+    "gramas": 160
+   }
+  ]
+ },
+ {
+  "id": 1,
+  "nome": "Arroz, integral, cozido",
+  "medidas": [
+   {
+    "nome": "1 colher de sopa cheia",
+    "gramas": 25
+   },
+   {
+    "nome": "1 escumadeira cheia",
+    "gramas": 140
+   }
+  ]
+ },
+ {
+  "id": 561,
+  "nome": "Feijão, carioca, cozido",
+  "medidas": [
+   {
+    "nome": "1 concha média",
+    "gramas": 130
+   },
+   {
+    "nome": "1 concha grande",
+    "gramas": 180
+   },
+   {
+    "nome": "1 colher de sopa cheia de grãos",
+    "gramas": 20
+   }
+  ]
+ },
+ {
+  "id": 567,
+  "nome": "Feijão, preto, cozido",
+  "medidas": [
+   {
+    "nome": "1 concha média",
+    "gramas": 130
+   },
+   {
+    "nome": "1 concha grande",
+    "gramas": 180
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "nome": "Aveia, flocos, crua",
+  "medidas": [
+   {
+    "nome": "1 colher de sopa cheia",
+    "gramas": 15
+   },
+   {
+    "nome": "2 colheres de sopa cheias",
+    "gramas": 30
+   },
+   {
+    "nome": "1 xícara de chá",
+    "gramas": 80
+   }
+  ]
+ },
+ {
+  "id": 88,
+  "nome": "Batata, doce, cozida",
+  "medidas": [
+   {
+    "nome": "1 unidade pequena",
+    "gramas": 100
+   },
+   {
+    "nome": "1 unidade média",
+    "gramas": 160
+   },
+   {
+    "nome": "3 fatias médias",
+    "gramas": 120
+   }
+  ]
+ },
+ {
+  "id": 91,
+  "nome": "Batata, inglesa, cozida",
+  "medidas": [
+   {
+    "nome": "1 unidade média",
+    "gramas": 140
+   },
+   {
+    "nome": "1 colher de sopa de purê",
+    "gramas": 35
+   }
+  ]
+ },
+ {
+  "id": 129,
+  "nome": "Mandioca, cozida",
+  "medidas": [
+   {
+    "nome": "1 pedaço médio",
+    "gramas": 100
+   },
+   {
+    "nome": "2 pedaços médios",
+    "gramas": 200
+   }
+  ]
+ },
+ {
+  "id": 52,
+  "nome": "Pão, trigo, forma, integral",
+  "medidas": [
+   {
+    "nome": "1 fatia",
+    "gramas": 25
+   },
+   {
+    "nome": "2 fatias",
+    "gramas": 50
+   }
+  ]
+ },
+ {
+  "id": 182,
+  "nome": "Banana, prata, crua",
+  "medidas": [
+   {
+    "nome": "1 unidade média",
+    "gramas": 70
+   },
+   {
+    "nome": "1 unidade grande",
+    "gramas": 100
+   }
+  ]
+ },
+ {
+  "id": 222,
+  "nome": "Maçã, Fuji, com casca, crua",
+  "medidas": [
+   {
+    "nome": "1 unidade média",
+    "gramas": 130
+   },
+   {
+    "nome": "1 unidade grande",
+    "gramas": 180
+   }
+  ]
+ },
+ {
+  "id": 239,
+  "nome": "Morango, cru",
+  "medidas": [
+   {
+    "nome": "5 unidades médias",
+    "gramas": 75
+   },
+   {
+    "nome": "1 xícara cheia",
+    "gramas": 150
+   }
+  ]
+ },
+ {
+  "id": 226,
+  "nome": "Mamão, Papaia, cru",
+  "medidas": [
+   {
+    "nome": "1/2 unidade pequena",
+    "gramas": 140
+   },
+   {
+    "nome": "1 fatia média",
+    "gramas": 100
+   }
+  ]
+ },
+ {
+  "id": 163,
+  "nome": "Abacate, cru",
+  "medidas": [
+   {
+    "nome": "2 colheres de sopa cheias",
+    "gramas": 50
+   },
+   {
+    "nome": "1/4 de unidade",
+    "gramas": 100
+   }
+  ]
+ },
+ {
+  "id": 449,
+  "nome": "Iogurte, natural, desnatado",
+  "medidas": [
+   {
+    "nome": "1 pote comercial",
+    "gramas": 170
+   },
+   {
+    "nome": "1 copo médio",
+    "gramas": 200
+   }
+  ]
+ },
+ {
+  "id": 461,
+  "nome": "Queijo, minas, frescal",
+  "medidas": [
+   {
+    "nome": "1 fatia média",
+    "gramas": 30
+   },
+   {
+    "nome": "2 fatias médias",
+    "gramas": 60
+   }
+  ]
+ },
+ {
+  "id": 260,
+  "nome": "Azeite, de oliva, extra virgem",
+  "medidas": [
+   {
+    "nome": "1 colher de sobremesa",
+    "gramas": 5
+   },
+   {
+    "nome": "1 colher de sopa",
+    "gramas": 10
+   },
+   {
+    "nome": "2 colheres de sopa",
+    "gramas": 20
+   }
+  ]
+ },
+ {
+  "id": 589,
+  "nome": "Castanha-do-Brasil, crua",
+  "medidas": [
+   {
+    "nome": "1 unidade",
+    "gramas": 4
+   },
+   {
+    "nome": "2 unidades",
+    "gramas": 8
+   },
+   {
+    "nome": "1 punhado (30g)",
+    "gramas": 30
+   }
+  ]
+ },
+ {
+  "id": 594,
+  "nome": "Linhaça, semente",
+  "medidas": [
+   {
+    "nome": "1 colher de sobremesa",
+    "gramas": 10
+   },
+   {
+    "nome": "1 colher de sopa cheia",
+    "gramas": 15
+   }
+  ]
+ },
+ {
+  "id": 100,
+  "nome": "Brócolis, cozido",
+  "medidas": [
+   {
+    "nome": "1 pires de chá",
+    "gramas": 80
+   },
+   {
+    "nome": "1 prato de sobremesa",
+    "gramas": 150
+   }
+  ]
+ },
+ {
+  "id": 78,
+  "nome": "Alface, crespa, crua",
+  "medidas": [
+   {
+    "nome": "4 folhas médias",
+    "gramas": 40
+   },
+   {
+    "nome": "Prato raso à vontade",
+    "gramas": 100
+   }
+  ]
+ },
+ {
+  "id": 77,
+  "nome": "Alface, americana, crua",
+  "medidas": [
+   {
+    "nome": "4 folhas médias",
+    "gramas": 40
+   },
+   {
+    "nome": "Prato raso à vontade",
+    "gramas": 100
+   }
+  ]
+ },
+ {
+  "id": 157,
+  "nome": "Tomate, com semente, cru",
+  "medidas": [
+   {
+    "nome": "4 fatias médias",
+    "gramas": 60
+   },
+   {
+    "nome": "1 unidade média",
+    "gramas": 110
+   }
+  ]
+ },
+ {
+  "id": 109,
+  "nome": "Cenoura, cozida",
+  "medidas": [
+   {
+    "nome": "1 colher de sopa ralada/picada",
+    "gramas": 20
+   },
+   {
+    "nome": "1 pires de chá",
+    "gramas": 80
+   }
+  ]
+ }
+]

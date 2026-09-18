@@ -23,17 +23,25 @@ const VITAMINAS: Spec[] = [
   ["riboflavina", "B2", "mg"], ["piridoxina", "B6", "mg"], ["retinol", "Retinol", "mcg"],
 ];
 
-const join = (n: Nutrients, specs: Spec[]) =>
+type SemDado = Partial<Record<NutrientKey, number>>;
+
+const join = (n: Nutrients, specs: Spec[], semDado: SemDado) =>
   specs
     .filter(([k]) => n[k] !== undefined)
-    .map(([k, label, un]) => `${label}: ${fmt(n[k]!, 1)} ${un}`)
+    .map(([k, label, un]) => `${label}${semDado[k] ? "*" : ""}: ${fmt(n[k]!, 1)} ${un}`)
     .join(" · ");
 
-/** Micronutrientes somados dos alimentos, em 3 linhas. Só entram os nutrientes presentes na base. */
-export function microGroups(n: Nutrients) {
-  return {
-    lipideos: join(n, LIPIDEOS),
-    minerais: join(n, MINERAIS),
-    vitaminas: join(n, VITAMINAS),
+/**
+ * Micronutrientes somados dos alimentos, em 3 linhas. Só entram os nutrientes presentes na base.
+ * Nutrientes em que algum alimento usado não tem dado levam "*" (soma parcial, subestimada).
+ */
+export function microGroups(n: Nutrients, semDado: SemDado = {}) {
+  const grupos = {
+    lipideos: join(n, LIPIDEOS, semDado),
+    minerais: join(n, MINERAIS, semDado),
+    vitaminas: join(n, VITAMINAS, semDado),
   };
+  return { ...grupos, parcial: Object.values(grupos).some((t) => t.includes("*")) };
 }
+
+export const NOTA_SOMA_PARCIAL = "* Soma parcial: pelo menos um alimento do plano não tem este dado na tabela de origem (TACO); o valor real pode ser maior.";

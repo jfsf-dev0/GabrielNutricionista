@@ -44,6 +44,32 @@ const normName = (f: Food) => {
   return v;
 }
 
+/** Itens que o nutricionista mais prescreve: sobem no ranking (nomes normalizados, início do nome). */
+const COMUNS = [
+  "arroz tipo 1 cozido", "arroz integral cozido", "feijao carioca cozido", "feijao preto cozido",
+  "frango peito sem pele grelhado", "ovo de galinha inteiro cozido", "leite de vaca integral", "leite de vaca desnatado",
+  "pao trigo frances", "pao trigo forma integral", "batata inglesa cozida", "batata doce cozida", "mandioca cozida",
+  "banana prata crua", "maca fuji com casca crua", "mamao papaia cru", "iogurte natural", "queijo minas frescal",
+  "azeite de oliva extra virgem", "aveia flocos crua", "carne bovina patinho sem gordura grelhado", "whey protein",
+];
+
+const CRU = /\b(cru|crua|crus|cruas)\b/;
+const CRU_SENSIVEL = new Set(["Cereais e derivados", "Carnes e derivados", "Pescados e frutos do mar", "Ovos e derivados", "Leguminosas e derivados", "Leite e derivados"]);
+const TUBERCULOS = /^(batata|mandioca|aipim|inhame|abobora|macaxeira)\b/;
+const VISCERAS = /\b(coracao|figado|moela|miudos|rim|tripa|lingua|pe|orelha|(?<!sem )pele|pescoco|rabo|bucho|dobradinha|sangue|cabeca|costela|mocoto|tendao)\b/;
+const EM_PO = /\bpo\b/;
+
+/** Ajuste de relevância: preparo e cortes comuns primeiro; cru, víscera e pó só quando pedidos. */
+function adjust(food: Food, name: string, tokens: string[]): number {
+  const q = tokens.join(" ");
+  let a = 0;
+  if (COMUNS.some((c) => name.startsWith(c)) && !EM_PO.test(name)) a += 3;
+  if (CRU.test(name) && (CRU_SENSIVEL.has(food.grupo) || TUBERCULOS.test(name)) && !CRU.test(q)) a -= 3;
+  if (VISCERAS.test(name) && !VISCERAS.test(q)) a -= 3;
+  if (EM_PO.test(name) && !EM_PO.test(q)) a -= 2;
+  return a;
+}
+
 function scoreExact(name: string, tokens: string[]): number | null {
   const words = name.split(" ");
   let score = 0;
@@ -79,7 +105,11 @@ export function searchFoods(foods: Food[], query: string, limit = 20): Food[] {
 
   const rank = (fn: (name: string, t: string[]) => number | null) =>
     foods
-      .map((f) => ({ f, s: fn(normName(f), tokens) }))
+      .map((f) => {
+        const name = normName(f);
+        const base = fn(name, tokens);
+        return { f, s: base === null ? null : base + adjust(f, name, tokens) };
+      })
       .filter((x): x is { f: Food; s: number } => x.s !== null)
       .sort((a, b) => b.s - a.s)
       .slice(0, limit)
@@ -91,9 +121,9 @@ export function searchFoods(foods: Food[], query: string, limit = 20): Food[] {
 }
 
 const NAME_RULES: Partial<Record<RestrictionKey, RegExp>> = {
-  lactose: /\b(leite|queijo|iogurte|requeijao|manteiga|creme de leite|coalhada|nata|doce de leite|ricota|mucarela)\b/,
-  gluten: /\b(trigo|pao|macarrao|bolo|biscoito|bolacha|cevada|centeio|aveia|pizza|torrada|panqueca|lasanha|pastel|gluten|cuscuz de trigo|farinha de rosca)\b/,
-  ovo: /\bovos?\b/,
+  lactose: /\b(leite|queijo|iogurte|requeijao|manteiga|creme de leite|coalhada|nata|doce de leite|ricota|mucarela|whey|caseina)\b/,
+  gluten: /\b(trigo|pao|macarrao|bolo|biscoito|bolacha|cevada|centeio|aveia|pizza|torrada|panqueca|lasanha|pastel|gluten|farinha de rosca|coxinha|nhoque|empada|empadao|salgado|kibe|esfiha|croissant|granola|cereal matinal|cereais mistura|farinha lactea|cerveja|shoyu|molho ingles)\b/,
+  ovo: /\b(ovos?|maionese|bolo|panqueca|pudim|merengue|mousse|quindim|sorvete)\b/,
   amendoim: /\bamendoim\b/,
   oleaginosas: /\b(castanha|noz|nozes|amendoa|avela|pistache|macadamia)\b/,
   frutosDoMar: /\b(camarao|lagosta|caranguejo|siri|mexilhao|ostra|lula|polvo|marisco|vieira)\b/,
@@ -105,10 +135,16 @@ const G_PESCADOS = "Pescados e frutos do mar";
 const G_OVOS = "Ovos e derivados";
 const G_LEITE = "Leite e derivados";
 
+/** Nomes que, mesmo em "Leite e derivados", não têm lactose nem são de origem animal (leite de coco, tofu…). */
+const NAO_LACTEO = /\b(coco|soja|tofu|vegetal|amendoa|arroz|aveia)\b/;
+/** Preparações industrializadas que costumam levar ovo/leite (alerta para vegano). */
+const ANIMAL_OCULTO = /\b(biscoito|bolo|pao de queijo|sorvete|chocolate|maionese|panqueca|torta|pudim|doce de leite|manteiga|mel|gelatina|wafer|pizza|lasanha|coxinha|kibe|pastel|empada|empadao|croissant|brigadeiro|quindim|whey|caseina)\b/;
+
 function matchesTag(food: Food, tag: RestrictionKey): boolean {
   const name = normName(food);
   switch (tag) {
     case "lactose":
+      if (NAO_LACTEO.test(name)) return false;
       return food.grupo === G_LEITE || !!NAME_RULES.lactose?.test(name);
     case "ovo":
       return food.grupo === G_OVOS || !!NAME_RULES.ovo?.test(name);
@@ -117,7 +153,7 @@ function matchesTag(food: Food, tag: RestrictionKey): boolean {
     case "vegano":
       return (
         food.grupo === G_CARNES || food.grupo === G_PESCADOS || food.grupo === G_OVOS ||
-        food.grupo === G_LEITE || /\b(mel|gelatina)\b/.test(name)
+        (food.grupo === G_LEITE && !NAO_LACTEO.test(name)) || ANIMAL_OCULTO.test(name)
       );
     default:
       return !!NAME_RULES[tag]?.test(name);

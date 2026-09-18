@@ -30,3 +30,17 @@ describe("microGroups", () => {
     expect(g.vitaminas).toBe("");
   });
 });
+
+describe("microGroups — soma parcial", () => {
+  it("marca com * os nutrientes em que algum alimento não tem dado", () => {
+    const g = microGroups({ fibras: 10, sodio: 500, ferro: 3 }, { fibras: 2, ferro: 1 });
+    expect(g.lipideos).toBe("Fibras*: 10 g");
+    expect(g.minerais).toBe("Sódio: 500 mg · Ferro*: 3 mg");
+    expect(g.parcial).toBe(true);
+  });
+  it("sem lacunas não marca nada", () => {
+    const g = microGroups({ fibras: 10 }, {});
+    expect(g.lipideos).toBe("Fibras: 10 g");
+    expect(g.parcial).toBe(false);
+  });
+});

@@ -50,6 +50,12 @@ export function validatePlan(profile: PatientProfile, foods: FoodIndex): Issue[]
     add(nivel, `desvio-${k}`, `Planejado de ${rotulos[k]} está ${abs.toFixed(0)}% ${sentido} da meta.`);
   }
 
+  const totals = dayTotals(profile, foods);
+  const semFibras = totals.semDado.fibras ?? 0;
+  if (semFibras > 0) {
+    add("aviso", "dados-incompletos", `Fibras somadas parcialmente: ${semFibras} alimento(s) do plano não têm esse dado na tabela de origem.`);
+  }
+
   const conflitos = new Set<string>();
   for (const m of profile.meals)
     for (const o of m.opcoes)

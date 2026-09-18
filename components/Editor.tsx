@@ -60,7 +60,7 @@ export default function Editor(p: Props) {
         {step === 0 && <StepIdentificacao profile={p.profile} onChange={p.onChange} lockName={p.lockName} />}
         {step === 1 && <StepMetas profile={p.profile} onChange={p.onChange} />}
         {step === 2 && <StepRefeicoes profile={p.profile} onChange={p.onChange} favoritos={p.favoritos} onFoodUsed={p.onFoodUsed} />}
-        {step === 3 && <StepExtras profile={p.profile} onChange={p.onChange} nutrientes={p.totals.nutrientes} />}
+        {step === 3 && <StepExtras profile={p.profile} onChange={p.onChange} nutrientes={p.totals.nutrientes} semDado={p.totals.semDado} />}
         {step === 4 && (
           <StepRevisao profile={p.profile} index={p.index} totals={p.totals} issues={p.issues} saved={p.saved} onSave={p.onSave} onPrint={p.onPrint} />
         )}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { macroPercents, optionTotals, type DayTotals, type FoodIndex } from "@/lib/nutrition";
-import { fmt, itemQty, microGroups } from "@/lib/report";
+import { fmt, itemQty, microGroups, NOTA_SOMA_PARCIAL } from "@/lib/report";
 import type { Meal, MealOption, PatientProfile } from "@/lib/types";
 
 interface ReportPreviewProps {
@@ -85,8 +85,8 @@ export default function ReportPreview({ profile, index, totals }: ReportPreviewP
 
   const micros =
     profile.micros.modo === "manual"
-      ? { lipideos: profile.micros.lipideos, minerais: profile.micros.minerais, vitaminas: profile.micros.vitaminas }
-      : microGroups(totals.nutrientes);
+      ? { lipideos: profile.micros.lipideos, minerais: profile.micros.minerais, vitaminas: profile.micros.vitaminas, parcial: false }
+      : microGroups(totals.nutrientes, totals.semDado);
 
   const macroCell = (label: string, value: string, unit: string, last = false) => (
     <div className={last ? "" : "border-r border-stone-200"}>
@@ -266,6 +266,7 @@ export default function ReportPreview({ profile, index, totals }: ReportPreviewP
                 <MicroLine label="Ácidos Graxos & Fibras" text={micros.lipideos} className="pb-1" />
                 <MicroLine label="Minerais" text={micros.minerais} className="py-1" />
                 <MicroLine label="Vitaminas" text={micros.vitaminas} className="pt-1" />
+                {micros.parcial && <div className="pt-1 text-[6.5pt] text-stone-500">{NOTA_SOMA_PARCIAL}</div>}
               </div>
             )}
           </div>

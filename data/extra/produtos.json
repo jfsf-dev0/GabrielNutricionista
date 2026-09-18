@@ -1,0 +1,256 @@
+[
+ {
+  "nome": "Filé de Tilápia, grelhado",
+  "grupo": "Pescados e frutos do mar",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 128.0,
+   "p": 26.2,
+   "c": 0.0,
+   "l": 2.7,
+   "fibras": 0.0
+  },
+  "medidas": [
+   {
+    "nome": "1 filé médio",
+    "gramas": 130
+   },
+   {
+    "nome": "1 filé grande",
+    "gramas": 180
+   }
+  ]
+ },
+ {
+  "nome": "Atum em conserva em água (sólido/ralado)",
+  "grupo": "Pescados e frutos do mar",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 116.0,
+   "p": 26.0,
+   "c": 0.0,
+   "l": 0.8,
+   "fibras": 0.0
+  },
+  "medidas": [
+   {
+    "nome": "1 lata drenada",
+    "gramas": 120
+   },
+   {
+    "nome": "1/2 lata drenada",
+    "gramas": 60
+   },
+   {
+    "nome": "1 colher de sopa",
+    "gramas": 20
+   }
+  ]
+ },
+ {
+  "nome": "Goma de Mandioca Hidratada para Tapioca",
+  "grupo": "Cereais e derivados",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 240.0,
+   "p": 0.0,
+   "c": 60.0,
+   "l": 0.0,
+   "fibras": 0.5
+  },
+  "medidas": [
+   {
+    "nome": "2 colheres de sopa rasas",
+    "gramas": 40
+   },
+   {
+    "nome": "3 colheres de sopa cheias",
+    "gramas": 60
+   },
+   {
+    "nome": "1 disco médio",
+    "gramas": 70
+   }
+  ]
+ },
+ {
+  "nome": "Uva Passa / Thompson",
+  "grupo": "Frutas e derivados",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 299.0,
+   "p": 3.1,
+   "c": 79.2,
+   "l": 0.5,
+   "fibras": 3.7
+  },
+  "medidas": [
+   {
+    "nome": "1 colher de sopa",
+    "gramas": 15
+   },
+   {
+    "nome": "1 punhado",
+    "gramas": 30
+   }
+  ]
+ },
+ {
+  "nome": "Queijo Cottage (0% a 2% gordura)",
+  "grupo": "Leite e derivados",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 98.0,
+   "p": 12.5,
+   "c": 3.4,
+   "l": 4.3,
+   "fibras": 0.0
+  },
+  "medidas": [
+   {
+    "nome": "1 colher de sopa cheia",
+    "gramas": 30
+   },
+   {
+    "nome": "2 colheres de sopa cheias",
+    "gramas": 60
+   },
+   {
+    "nome": "1 pote pequeno",
+    "gramas": 150
+   }
+  ]
+ },
+ {
+  "nome": "Leite de Vaca Desnatado",
+  "grupo": "Leite e derivados",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 35.0,
+   "p": 3.4,
+   "c": 5.0,
+   "l": 0.1,
+   "fibras": 0.0
+  },
+  "medidas": [
+   {
+    "nome": "1 xícara de chá",
+    "gramas": 200
+   },
+   {
+    "nome": "1 copo grande",
+    "gramas": 250
+   }
+  ]
+ },
+ {
+  "nome": "Pasta de Amendoim Integral",
+  "grupo": "Nozes e sementes",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 588.0,
+   "p": 25.0,
+   "c": 20.0,
+   "l": 50.0,
+   "fibras": 8.0
+  },
+  "medidas": [
+   {
+    "nome": "1 colher de sopa rasa",
+    "gramas": 15
+   },
+   {
+    "nome": "1 colher de sopa cheia",
+    "gramas": 25
+   }
+  ]
+ },
+ {
+  "nome": "Chia, semente",
+  "grupo": "Nozes e sementes",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 486.0,
+   "p": 16.5,
+   "c": 42.1,
+   "l": 30.7,
+   "fibras": 34.4
+  },
+  "medidas": [
+   {
+    "nome": "1 colher de sobremesa",
+    "gramas": 10
+   },
+   {
+    "nome": "1 colher de sopa cheia",
+    "gramas": 15
+   }
+  ]
+ },
+ {
+  "nome": "Whey Protein Concentrado 80%",
+  "grupo": "Suplementos",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 400.0,
+   "p": 80.0,
+   "c": 6.0,
+   "l": 6.0,
+   "fibras": 0.0
+  },
+  "medidas": [
+   {
+    "nome": "1 scoop raso",
+    "gramas": 20
+   },
+   {
+    "nome": "1 scoop padrão (30g)",
+    "gramas": 30
+   },
+   {
+    "nome": "1 scoop e meio",
+    "gramas": 45
+   }
+  ]
+ },
+ {
+  "nome": "Whey Protein Isolado 90%",
+  "grupo": "Suplementos",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 367.0,
+   "p": 90.0,
+   "c": 1.0,
+   "l": 0.8,
+   "fibras": 0.0
+  },
+  "medidas": [
+   {
+    "nome": "1 scoop padrão (30g)",
+    "gramas": 30
+   }
+  ]
+ },
+ {
+  "nome": "Creatina Monohidratada",
+  "grupo": "Suplementos",
+  "origem": "Cadastro interno",
+  "n": {
+   "kcal": 0.0,
+   "p": 0.0,
+   "c": 0.0,
+   "l": 0.0,
+   "fibras": 0.0
+  },
+  "medidas": [
+   {
+    "nome": "1 dosador pequeno",
+    "gramas": 3
+   },
+   {
+    "nome": "1 dosador padrão",
+    "gramas": 5
+   }
+  ]
+ }
+]

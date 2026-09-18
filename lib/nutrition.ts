@@ -59,15 +59,29 @@ export interface DayTotals {
   max: Macros;
   /** Micronutrientes e demais nutrientes na média. */
   nutrientes: Nutrients;
+  /**
+   * Quantos alimentos usados no plano não trazem cada nutriente na base (lacuna da tabela de origem).
+   * Nesses casos a soma é parcial (subestima). Só aparecem chaves com pelo menos 1 alimento sem dado.
+   */
+  semDado: Partial<Record<NutrientKey, number>>;
 }
+
+const NUTRIENTES_ACOMPANHADOS: NutrientKey[] = [
+  "fibras", "colesterol", "calcio", "magnesio", "fosforo", "ferro", "sodio", "potassio", "zinco", "cobre",
+  "vitC", "tiamina", "riboflavina", "piridoxina", "niacina", "retinol",
+];
 
 export function dayTotals(profile: PatientProfile, foods: FoodIndex): DayTotals {
   let nutrientes: Nutrients = {};
   const min = emptyMacros();
   const max = emptyMacros();
   const keys: (keyof Macros)[] = ["kcal", "p", "c", "l"];
+  const usados = new Set<number>();
 
   for (const meal of profile.meals) {
+    for (const o of meal.opcoes)
+      for (const it of o.itens) if (!it.nota && it.foodId !== undefined && it.gramas > 0) usados.add(it.foodId);
+
     const totais = meal.opcoes.map((o) => optionTotals(o, foods)).filter((t) => !t.vazia);
     if (totais.length === 0) continue;
 
@@ -81,7 +95,13 @@ export function dayTotals(profile: PatientProfile, foods: FoodIndex): DayTotals 
       max[k] += Math.max(...vals);
     }
   }
-  return { media: toMacros(nutrientes), min, max, nutrientes };
+  const semDado: DayTotals["semDado"] = {};
+  for (const id of usados) {
+    const food = foods.get(id);
+    if (!food) continue;
+    for (const k of NUTRIENTES_ACOMPANHADOS) if (food.n[k] === undefined) semDado[k] = (semDado[k] ?? 0) + 1;
+  }
+  return { media: toMacros(nutrientes), min, max, nutrientes, semDado };
 }
 
 export interface BalanceLine {

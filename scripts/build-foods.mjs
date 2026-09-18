@@ -57,5 +57,25 @@ for (const f of read("food.csv")) {
   foods.push({ id: Number(f.id), nome: f.name, grupo: categories.get(f.categoryId) ?? "Outros", origem: "TACO", n });
 }
 
+// --- Medidas caseiras (por alimento da TACO) ---
+const byId = new Map(foods.map((f) => [f.id, f]));
+const medidas = JSON.parse(readFileSync(join(root, "data/extra/medidas.json"), "utf8"));
+for (const m of medidas) {
+  const food = byId.get(m.id);
+  if (!food) throw new Error(`medidas.json: alimento #${m.id} (${m.nome}) não existe na TACO gerada`);
+  if (food.nome !== m.nome) throw new Error(`medidas.json: #${m.id} é "${food.nome}", esperado "${m.nome}"`);
+  food.medidas = m.medidas;
+}
+
+// --- Produtos sem equivalente na TACO (ids a partir de 1001, estáveis pela ordem do arquivo) ---
+const produtos = JSON.parse(readFileSync(join(root, "data/extra/produtos.json"), "utf8"));
+produtos.forEach((p, i) => foods.push({ id: 1001 + i, nome: p.nome, grupo: p.grupo, origem: p.origem, n: p.n, medidas: p.medidas }));
+
+const ids = new Set();
+for (const f of foods) {
+  if (ids.has(f.id)) throw new Error(`id duplicado: ${f.id}`);
+  ids.add(f.id);
+}
+
 writeFileSync(join(root, "public/foods.json"), JSON.stringify(foods));
-console.log(`${foods.length} alimentos → public/foods.json`);
+console.log(`${foods.length} alimentos (${medidas.length} com medidas caseiras, ${produtos.length} produtos internos) → public/foods.json`);

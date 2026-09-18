@@ -141,10 +141,25 @@ export default function StepRefeicoes({ profile, onChange, favoritos, onFoodUsed
                             onChange={(v) => patchItem(opt.id, it.id, { gramas: v })}
                           />
                           <span className="text-[10px] text-stone-400">g</span>
-                          <TextInput
-                            value={it.medida ?? ""} placeholder="medida caseira" className="!w-28" title="Medida caseira (texto livre)"
-                            onChange={(e) => patchItem(opt.id, it.id, { medida: e.target.value || undefined })}
-                          />
+                          {food?.medidas?.length ? (
+                            <select
+                              aria-label={`Medida caseira de ${it.nome}`}
+                              className={`${inputCls} !w-32`}
+                              value={food.medidas.some((m) => m.nome === it.medida) ? it.medida : ""}
+                              onChange={(e) => {
+                                const m = food.medidas!.find((x) => x.nome === e.target.value);
+                                patchItem(opt.id, it.id, m ? { medida: m.nome, gramas: m.gramas } : { medida: undefined });
+                              }}
+                            >
+                              <option value="">medida caseira…</option>
+                              {food.medidas.map((m) => <option key={m.nome} value={m.nome}>{m.nome} ({m.gramas} g)</option>)}
+                            </select>
+                          ) : (
+                            <TextInput
+                              value={it.medida ?? ""} placeholder="medida caseira" className="!w-28" title="Medida caseira (texto livre)" aria-label={`Medida caseira de ${it.nome}`}
+                              onChange={(e) => patchItem(opt.id, it.id, { medida: e.target.value || undefined })}
+                            />
+                          )}
                           <span className="w-12 text-right text-[10px] text-stone-500 tabular-nums">
                             {macros ? `${fmt(macros.kcal, 0)} kcal` : ""}
                           </span>

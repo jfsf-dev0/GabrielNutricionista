@@ -16,6 +16,11 @@ export interface Macros {
   l: number;
 }
 
+export interface Medida {
+  nome: string;
+  gramas: number;
+}
+
 export interface Food {
   id: number;
   nome: string;
@@ -23,6 +28,8 @@ export interface Food {
   origem: string;
   /** por 100 g */
   n: Nutrients;
+  /** Medidas caseiras (ex.: "1 colher de sopa cheia" = 25 g), quando cadastradas. */
+  medidas?: Medida[];
 }
 
 export interface MealItem {
@@ -206,22 +213,6 @@ export interface Consultation {
   pesoAferido?: number;
   conduta?: string;
   notas?: string;
-}
-
-export interface FoodItemTACO {
-  id: string;
-  nome: string;
-  categoria: "Carnes & Ovos" | "Cereais & Leguminosas" | "Frutas & Sucos" | "Laticínios" | "Gorduras & Óleos" | "Verduras & Legumes" | "Suplementos";
-  porcaoPadraoGramas: number; // 100g base
-  calorias: number;
-  proteinas: number;
-  carboidratos: number;
-  gorduras: number;
-  fibras: number;
-  medidasCaseiras: {
-    descricao: string;
-    gramas: number;
-  }[];
 }
 
 export interface DiaryEntry {
