@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Bell,
   Plus,
@@ -19,8 +20,24 @@ interface TopbarProps {
   onOpenCommand?: () => void;
 }
 
-export default function Topbar({ title = "Painel Clínico", subtitle, onOpenCommand }: TopbarProps) {
+const ROUTE_TITLES: [RegExp, string][] = [
+  [/^\/$/, "Painel Clínico"],
+  [/^\/pacientes\/[^/]+/, "Ficha do paciente"],
+  [/^\/pacientes/, "Pacientes"],
+  [/^\/planos\/[^/]+/, "Construtor de plano"],
+  [/^\/planos/, "Planos alimentares"],
+  [/^\/consulta\/[^/]+/, "Modo consulta"],
+  [/^\/consultas/, "Agenda de consultas"],
+  [/^\/avaliacoes/, "Avaliações"],
+  [/^\/alimentos/, "Base de alimentos"],
+  [/^\/financeiro/, "Financeiro"],
+  [/^\/configuracoes/, "Configurações"],
+];
+
+export default function Topbar({ title: titleProp, subtitle, onOpenCommand }: TopbarProps) {
   const [showAlerts, setShowAlerts] = useState(false);
+  const pathname = usePathname() ?? "/";
+  const title = titleProp ?? ROUTE_TITLES.find(([re]) => re.test(pathname))?.[1] ?? "Painel Clínico";
 
   const alerts = [
     {
@@ -54,6 +71,13 @@ export default function Topbar({ title = "Painel Clínico", subtitle, onOpenComm
           )}
         </div>
       </div>
+
+      <span
+        className="hidden lg:inline-block text-[10px] font-medium px-2 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300"
+        title="Os dados ficam salvos apenas neste navegador, sem login. Não use dados reais de pacientes até o backend ser ativado."
+      >
+        Demonstração · dados só neste navegador
+      </span>
 
       {/* Center / Search Shortcut */}
       <div className="hidden md:flex items-center">
@@ -116,7 +140,7 @@ export default function Topbar({ title = "Painel Clínico", subtitle, onOpenComm
 
         {/* Quick action: Iniciar Consulta */}
         <Link
-          href="/consulta/pac-joao-freire"
+          href="/consultas"
           className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium transition-colors shadow-xs"
         >
           <Play className="w-3 h-3 fill-current" />
@@ -125,7 +149,7 @@ export default function Topbar({ title = "Painel Clínico", subtitle, onOpenComm
 
         {/* Quick action: Novo Plano */}
         <Link
-          href="/planos/pac-joao-freire"
+          href="/pacientes"
           className="flex items-center gap-1.5 px-3 py-1.5 border border-stone-200 hover:bg-stone-100 text-stone-700 rounded-lg text-xs font-medium transition-colors"
         >
           <Plus className="w-3.5 h-3.5 text-stone-500" />

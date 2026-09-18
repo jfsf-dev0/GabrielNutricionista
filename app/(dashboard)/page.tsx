@@ -25,9 +25,11 @@ import {
   getStoredDiary,
   getStoredFinancial,
 } from "@/lib/store";
+import { usePortalHref } from "@/components/usePortalHref";
 import { Patient, Consultation, DiaryEntry } from "@/lib/types";
 
 export default function DashboardHomePage() {
+  const portalHref = usePortalHref();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [recentDiary, setRecentDiary] = useState<DiaryEntry[]>([]);
@@ -35,7 +37,7 @@ export default function DashboardHomePage() {
   useEffect(() => {
     setPatients(getStoredPatients());
     setConsultations(getStoredConsultations());
-    setRecentDiary(getStoredDiary("pac-joao-freire"));
+    setRecentDiary(getStoredDiary());
   }, []);
 
   const activePatients = patients.filter((p) => p.status === "ativo").length;
@@ -60,14 +62,14 @@ export default function DashboardHomePage() {
 
         <div className="flex items-center gap-2 shrink-0">
           <Link
-            href="/consulta/pac-joao-freire"
+            href="/consultas"
             className="flex items-center gap-1.5 px-3.5 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium transition-colors shadow-xs"
           >
             <Play className="w-3.5 h-3.5 fill-current" />
             <span>Iniciar Consulta de João Freire</span>
           </Link>
           <Link
-            href="/planos/pac-joao-freire"
+            href="/pacientes"
             className="flex items-center gap-1.5 px-3 py-2 border border-stone-200 hover:bg-stone-50 text-stone-700 rounded-lg text-xs font-medium transition-colors"
           >
             <FileText className="w-3.5 h-3.5 text-stone-500" />
@@ -358,7 +360,7 @@ export default function DashboardHomePage() {
                 </p>
               </div>
               <Link
-                href="/portal/pac-joao-freire"
+                href={portalHref}
                 target="_blank"
                 className="text-[11px] text-amber-600 hover:underline flex items-center gap-0.5 font-medium"
               >

@@ -32,7 +32,8 @@ import { calcIMC, calcBodyComposition } from "@/lib/calc";
 export default function ConsultationLivePage() {
   const params = useParams();
   const router = useRouter();
-  const patientId = (params?.id as string) || "pac-joao-freire";
+  const patientId = String(params?.id ?? "");
+  const [notFound, setNotFound] = useState(false);
 
   const [patient, setPatient] = useState<Patient | null>(null);
   const [profile, setProfile] = useState<PatientProfile | null>(null);
@@ -52,7 +53,12 @@ export default function ConsultationLivePage() {
 
   useEffect(() => {
     const all = getStoredPatients();
-    const p = all.find((x) => x.id === patientId) || all[0];
+    const p = all.find((x) => x.id === patientId);
+    if (!p) {
+      setNotFound(true);
+      return;
+    }
+    setNotFound(false);
     if (p) {
       setPatient(p);
       setPesoHoje(p.dadosAntropometricos.peso);
@@ -137,6 +143,15 @@ export default function ConsultationLivePage() {
     alert("Consulta finalizada com sucesso! Prontuário e métricas atualizados.");
     router.push(`/pacientes/${patient.id}`);
   };
+
+  if (notFound) {
+    return (
+      <div className="max-w-md mx-auto mt-16 text-center space-y-3">
+        <h2 className="font-serif-title text-xl">Paciente não encontrado</h2>
+        <Link href="/consultas" className="inline-block px-3 py-1.5 bg-stone-900 text-white text-xs rounded">Ver consultas</Link>
+      </div>
+    );
+  }
 
   if (!patient || !profile) {
     return (

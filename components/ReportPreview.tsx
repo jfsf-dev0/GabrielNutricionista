@@ -121,9 +121,9 @@ export default function ReportPreview({ profile, index, totals }: ReportPreviewP
 
           <div className="mt-3.5 mb-2.5 flex items-baseline justify-between">
             <div>
-              <h1 className="font-serif-title text-[16pt] font-normal tracking-tight text-stone-900 leading-tight">
+              <h2 className="font-serif-title text-[16pt] font-normal tracking-tight text-stone-900 leading-tight">
                 Planejamento Alimentar Individualizado
-              </h1>
+              </h2>
               <p className="text-[7.5pt] text-stone-400 font-light mt-0.5">
                 Prescrição clínica para manutenção metabólica, composição corporal e rendimento físico.
               </p>

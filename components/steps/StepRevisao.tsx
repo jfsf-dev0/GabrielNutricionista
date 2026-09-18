@@ -88,12 +88,12 @@ export default function StepRevisao({ profile, index, totals, issues, saved, onS
 
       <div className="flex items-center gap-2 pt-1">
         <button onClick={onSave} className="px-3 py-1.5 border border-stone-300 hover:border-stone-500 text-xs rounded flex items-center gap-1.5">
-          <Save className="w-3.5 h-3.5" /> Salvar paciente
+          <Save className="w-3.5 h-3.5" aria-hidden="true" /> Salvar agora
         </button>
         <button onClick={onPrint} className="px-3.5 py-1.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-medium rounded flex items-center gap-1.5">
           <Printer className="w-3.5 h-3.5" /> Imprimir / Exportar PDF
         </button>
-        {saved === true && <span className="text-[11px] text-emerald-700">Salvo neste navegador.</span>}
+        {saved === true && <span className="text-[11px] text-emerald-700">Plano salvo neste navegador.</span>}
         {saved === false && <span className="text-[11px] text-red-700">Não foi possível salvar (armazenamento cheio ou bloqueado). Use “Salvar JSON”.</span>}
       </div>
     </div>

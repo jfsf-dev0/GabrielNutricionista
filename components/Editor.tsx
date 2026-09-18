@@ -25,6 +25,8 @@ interface Props {
   saved: boolean | null;
   onSave: () => void;
   onPrint: () => void;
+  /** Nome do paciente vem do cadastro (somente leitura). */
+  lockName?: boolean;
 }
 
 export default function Editor(p: Props) {
@@ -55,7 +57,7 @@ export default function Editor(p: Props) {
       <GoalPanel profile={p.profile} totals={p.totals} />
 
       <div className="flex-1 overflow-y-auto p-5 text-xs">
-        {step === 0 && <StepIdentificacao profile={p.profile} onChange={p.onChange} />}
+        {step === 0 && <StepIdentificacao profile={p.profile} onChange={p.onChange} lockName={p.lockName} />}
         {step === 1 && <StepMetas profile={p.profile} onChange={p.onChange} />}
         {step === 2 && <StepRefeicoes profile={p.profile} onChange={p.onChange} favoritos={p.favoritos} onFoodUsed={p.onFoodUsed} />}
         {step === 3 && <StepExtras profile={p.profile} onChange={p.onChange} nutrientes={p.totals.nutrientes} />}

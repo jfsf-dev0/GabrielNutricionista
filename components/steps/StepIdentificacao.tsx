@@ -10,7 +10,7 @@ export interface StepProps {
   onChange: (p: PatientProfile) => void;
 }
 
-export default function StepIdentificacao({ profile, onChange }: StepProps) {
+export default function StepIdentificacao({ profile, onChange, lockName }: StepProps & { lockName?: boolean }) {
   const set = <K extends keyof PatientProfile>(k: K, v: PatientProfile[K]) => onChange({ ...profile, [k]: v });
   const tags = profile.restricoes.tags;
   const toggle = (t: RestrictionKey) =>
@@ -20,7 +20,7 @@ export default function StepIdentificacao({ profile, onChange }: StepProps) {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <Field label="Nome do paciente">
-          <TextInput value={profile.paciente} onChange={(e) => set("paciente", e.target.value)} />
+          <TextInput value={profile.paciente} onChange={(e) => set("paciente", e.target.value)} readOnly={lockName} title={lockName ? "O nome vem do cadastro do paciente" : undefined} className={lockName ? "bg-stone-50" : ""} />
         </Field>
         <Field label="Data da prescrição">
           <TextInput value={profile.data} onChange={(e) => set("data", e.target.value)} />

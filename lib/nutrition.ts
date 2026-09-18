@@ -149,3 +149,15 @@ export function calcGoals(a: Antropometria): Goals | null {
 
 export const r1 = (v: number) => Math.round(v * 10) / 10;
 export const r0 = (v: number) => Math.round(v);
+
+/** Meta de água em ml a partir do texto da prescrição ("35 ml/kg/dia", "3,0L a 3,8L"). */
+export function hydrationGoalMl(text: string, pesoKg: number): number {
+  const DEFAULT = 2000;
+  const t = text.toLowerCase().replace(",", ".");
+  const clamp = (v: number) => Math.min(8000, Math.max(500, Math.round(v)));
+  const perKg = t.match(/(\d+(?:\.\d+)?)\s*ml\s*\/\s*kg/);
+  if (perKg) return pesoKg > 0 ? clamp(Number(perKg[1]) * pesoKg) : DEFAULT;
+  const litros = t.match(/(\d+(?:\.\d+)?)\s*(?:l\b|litros?)/);
+  if (litros) return clamp(Number(litros[1]) * 1000);
+  return DEFAULT;
+}

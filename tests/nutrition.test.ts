@@ -100,3 +100,25 @@ describe("calcGoals (Mifflin-St Jeor)", () => {
     expect(g.c).toBeGreaterThanOrEqual(0);
   });
 });
+
+import { hydrationGoalMl } from "@/lib/nutrition";
+
+describe("hydrationGoalMl", () => {
+  it("interpreta ml/kg com o peso do paciente", () => {
+    expect(hydrationGoalMl("35 ml/kg/dia", 80)).toBe(2800);
+    expect(hydrationGoalMl("40ml/kg", 60)).toBe(2400);
+  });
+  it("interpreta litros e faixas (usa o menor valor)", () => {
+    expect(hydrationGoalMl("3,0L a 3,8L / dia", 70)).toBe(3000);
+    expect(hydrationGoalMl("2 litros", 70)).toBe(2000);
+  });
+  it("sem dado utilizável devolve o padrão de 2.000 ml", () => {
+    expect(hydrationGoalMl("", 70)).toBe(2000);
+    expect(hydrationGoalMl("beber bastante", 70)).toBe(2000);
+    expect(hydrationGoalMl("35 ml/kg", 0)).toBe(2000);
+  });
+  it("resultado sempre dentro de 500–8000 ml", () => {
+    expect(hydrationGoalMl("100 ml/kg", 200)).toBe(8000);
+    expect(hydrationGoalMl("0,1 L", 70)).toBe(500);
+  });
+});

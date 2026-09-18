@@ -18,6 +18,7 @@ import {
   Command,
 } from "lucide-react";
 import { PRACTITIONER_GABRIEL } from "@/lib/store";
+import { usePortalHref } from "@/components/usePortalHref";
 
 interface SidebarProps {
   onOpenCommand?: () => void;
@@ -25,6 +26,7 @@ interface SidebarProps {
 
 export default function Sidebar({ onOpenCommand }: SidebarProps) {
   const pathname = usePathname();
+  const portalHref = usePortalHref();
 
   const navigation = [
     { name: "Início", href: "/", icon: LayoutDashboard, exact: true },
@@ -122,7 +124,7 @@ export default function Sidebar({ onOpenCommand }: SidebarProps) {
           Acesso Paciente
         </div>
         <Link
-          href="/portal/pac-joao-freire"
+          href={portalHref}
           target="_blank"
           className="group flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-amber-400/90 hover:text-amber-300 hover:bg-amber-950/20 border border-amber-500/20 transition-all"
         >

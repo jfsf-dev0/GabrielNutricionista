@@ -61,7 +61,7 @@ export default function PlansDirectoryPage() {
         </div>
 
         <Link
-          href="/planos/pac-joao-freire"
+          href="/pacientes"
           className="flex items-center gap-1.5 px-3.5 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium transition-colors shadow-xs self-start"
         >
           <Plus className="w-3.5 h-3.5" />
@@ -183,7 +183,7 @@ export default function PlansDirectoryPage() {
                   {tpl.calorias} kcal · {tpl.prot}g P
                 </span>
                 <Link
-                  href="/planos/pac-joao-freire"
+                  href="/pacientes"
                   className="text-stone-900 hover:underline font-medium text-[11px]"
                 >
                   Usar Modelo

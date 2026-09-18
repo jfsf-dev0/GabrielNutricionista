@@ -28,13 +28,16 @@ import {
   getStoredDiary,
   getStoredFinancial,
 } from "@/lib/store";
+import { usePortalHref } from "@/components/usePortalHref";
 import { Patient, PatientProfile, DiaryEntry, FinancialItem } from "@/lib/types";
 
 export default function PatientDetailPage() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const patientId = (params?.id as string) || "pac-joao-freire";
+  const patientId = String(params?.id ?? "");
+  const portalHref = usePortalHref(patientId);
+  const [notFound, setNotFound] = useState(false);
 
   const [patient, setPatient] = useState<Patient | null>(null);
   const [profile, setProfile] = useState<PatientProfile | null>(null);
@@ -49,12 +52,26 @@ export default function PatientDetailPage() {
 
   useEffect(() => {
     const all = getStoredPatients();
-    const found = all.find((p) => p.id === patientId) || all[0];
+    const found = all.find((p) => p.id === patientId);
+    if (!found) {
+      setNotFound(true);
+      return;
+    }
+    setNotFound(false);
     setPatient(found);
-    setProfile(getStoredPlanProfile(found?.id || "pac-joao-freire"));
-    setDiary(getStoredDiary(found?.id || "pac-joao-freire"));
-    setFinancial(getStoredFinancial().filter((f) => f.pacienteId === found?.id));
+    setProfile(getStoredPlanProfile(found.id));
+    setDiary(getStoredDiary(found.id));
+    setFinancial(getStoredFinancial().filter((f) => f.pacienteId === found.id));
   }, [patientId]);
+
+  if (notFound) {
+    return (
+      <div className="max-w-md mx-auto mt-16 text-center space-y-3">
+        <h2 className="font-serif-title text-xl">Paciente não encontrado</h2>
+        <Link href="/pacientes" className="inline-block px-3 py-1.5 bg-stone-900 text-white text-xs rounded">Ver pacientes</Link>
+      </div>
+    );
+  }
 
   if (!patient || !profile) {
     return (
@@ -319,7 +336,7 @@ export default function PatientDetailPage() {
             </div>
 
             <Link
-              href="/portal/pac-joao-freire"
+              href={portalHref}
               target="_blank"
               className="w-full py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-medium rounded-lg flex items-center justify-center gap-1.5 transition-colors"
             >
@@ -546,7 +563,7 @@ export default function PatientDetailPage() {
               </p>
             </div>
             <Link
-              href="/portal/pac-joao-freire"
+              href={portalHref}
               target="_blank"
               className="text-xs text-stone-700 bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-medium"
             >

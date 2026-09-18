@@ -14,8 +14,10 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Gabriel Alves — Nutrição Clínica & Performance",
+  title: { default: "Gabriel Alves — Nutrição Clínica & Performance", template: "%s · Gabriel Alves" },
   description: "Painel de prescrição dietética e geração de relatórios clínicos estruturados.",
+  // Área com dados de saúde: nunca indexar.
+  robots: { index: false, follow: false },
 };
 
 import { FoodsProvider } from "@/components/FoodsProvider";

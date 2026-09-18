@@ -444,8 +444,13 @@ function planFromPatient(p: Patient): PatientProfile {
   if (DEMO_IDS.has(p.id)) {
     return { ...defaultProfile, ...fields, id: `plano-${p.id}`, data: hoje, calorias: p.dadosAntropometricos.get || p.dadosAntropometricos.tmb + 400 };
   }
+  return freshPlanFor(p);
+}
+
+/** Plano em branco (refeições vazias) já com os dados do paciente e do profissional. */
+export function freshPlanFor(p: Patient): PatientProfile {
   const { nutricionista, crn, telefone, local } = defaultProfile;
-  return { ...emptyProfile({ nutricionista, crn, telefone, local }), ...fields, id: `plano-${p.id}` };
+  return { ...emptyProfile({ nutricionista, crn, telefone, local }), ...profileFieldsFromPatient(p), id: `plano-${p.id}` };
 }
 
 export function getStoredPlanProfile(patientId: string): PatientProfile {
@@ -466,8 +471,10 @@ export function saveStoredPlanProfile(patientId: string, profile: PatientProfile
   return writeJson(`${STORAGE_KEYS.PROFILES}_${patientId}`, { ...profile, atualizadoEm: new Date().toISOString() });
 }
 
-export function getStoredDiary(patientId: string): DiaryEntry[] {
-  return readList(STORAGE_KEYS.DIARY, INITIAL_DIARY, sanitizeDiaryEntry).filter((d) => d.pacienteId === patientId);
+/** Diário de um paciente; sem `patientId`, o de todos (mais recentes primeiro na ordem gravada). */
+export function getStoredDiary(patientId?: string): DiaryEntry[] {
+  const all = readList(STORAGE_KEYS.DIARY, INITIAL_DIARY, sanitizeDiaryEntry);
+  return patientId === undefined ? all : all.filter((d) => d.pacienteId === patientId);
 }
 
 export function addStoredDiaryEntry(entry: DiaryEntry): boolean {

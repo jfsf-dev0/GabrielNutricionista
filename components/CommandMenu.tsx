@@ -64,13 +64,13 @@ export default function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
       title: "Iniciar Consulta com João Freire",
       subtitle: "Abrir modo clínico estruturado",
       icon: Calendar,
-      href: "/consulta/pac-joao-freire",
+      href: "/consultas",
     },
     {
       title: "Construtor de Plano — João Freire",
       subtitle: "Editar dieta de 2.268 kcal e exportar A4",
       icon: UtensilsCrossed,
-      href: "/planos/pac-joao-freire",
+      href: "/pacientes",
     },
     {
       title: "Consultar Tabela TACO",
